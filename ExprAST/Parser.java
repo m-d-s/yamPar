@@ -39,7 +39,7 @@ public class Parser implements ParserConstants {
     case LOR:
       jj_consume_token(LOR);
       p = LogOr();
-                                     e = new LOr(e,p);
+                                  e = new LOr(e,p);
       break;
     default:
       jj_la1[0] = jj_gen;
@@ -80,32 +80,32 @@ public class Parser implements ParserConstants {
       case LT:
         jj_consume_token(LT);
         p = AddSub();
-                         e = new Lt(e,p);
+                          e = new Lt(e,p);
         break;
       case LTEQ:
         jj_consume_token(LTEQ);
         p = AddSub();
-                         e = new Lte(e,p);
+                          e = new Lte(e,p);
         break;
       case GT:
         jj_consume_token(GT);
         p = AddSub();
-                         e = new Gt(e,p);
+                          e = new Gt(e,p);
         break;
       case GTEQ:
         jj_consume_token(GTEQ);
         p = AddSub();
-                         e = new Gte(e,p);
+                          e = new Gte(e,p);
         break;
       case NEQ:
         jj_consume_token(NEQ);
         p = AddSub();
-                         e = new Neq(e,p);
+                          e = new Neq(e,p);
         break;
       case EQEQ:
         jj_consume_token(EQEQ);
         p = AddSub();
-                         e = new Eql(e,p);
+                          e = new Eql(e,p);
         break;
       default:
         jj_la1[2] = jj_gen;
@@ -139,12 +139,12 @@ public class Parser implements ParserConstants {
       case ADD:
         jj_consume_token(ADD);
         p = MulDiv();
-                                     e = new Add(e,p);
+                                      e = new Add(e,p);
         break;
       case SUB:
         jj_consume_token(SUB);
         p = MulDiv();
-                                     e = new Sub(e,p);
+                                      e = new Sub(e,p);
         break;
       default:
         jj_la1[5] = jj_gen;
@@ -174,12 +174,12 @@ public class Parser implements ParserConstants {
       case MUL:
         jj_consume_token(MUL);
         p = Atom();
-                                 e = new Mul(e,p);
+                                  e = new Mul(e,p);
         break;
       case DIV:
         jj_consume_token(DIV);
         p = Atom();
-                                 e = new Div(e,p);
+                                  e = new Div(e,p);
         break;
       default:
         jj_la1[7] = jj_gen;
@@ -192,39 +192,24 @@ public class Parser implements ParserConstants {
   }
 
   static final public Expr Atom() throws ParseException {
-               Expr e;
+               Expr e; Token t;
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+    case IDENT:
+      t = jj_consume_token(IDENT);
+                              {if (true) return new Id(t.image);}
+      break;
+    case INTLIT:
+      t = jj_consume_token(INTLIT);
+                              {if (true) return new IntLit(Integer.parseInt(t.image));}
+      break;
     case OPEN:
       jj_consume_token(OPEN);
       e = Expr();
       jj_consume_token(CLOSE);
-      break;
-    case INTLIT:
-    case IDENT:
-      e = Term();
-      {if (true) return e;}
+                              {if (true) return e;}
       break;
     default:
       jj_la1[8] = jj_gen;
-      jj_consume_token(-1);
-      throw new ParseException();
-    }
-    throw new Error("Missing return statement in function");
-  }
-
-  static final public Expr Term() throws ParseException {
-               Token t;
-    switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-    case IDENT:
-      t = jj_consume_token(IDENT);
-               {if (true) return new Id(t.image);}
-      break;
-    case INTLIT:
-      t = jj_consume_token(INTLIT);
-               {if (true) return new IntLit(Integer.parseInt(t.image));}
-      break;
-    default:
-      jj_la1[9] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -241,13 +226,13 @@ public class Parser implements ParserConstants {
   static public Token jj_nt;
   static private int jj_ntk;
   static private int jj_gen;
-  static final private int[] jj_la1 = new int[10];
+  static final private int[] jj_la1 = new int[9];
   static private int[] jj_la1_0;
   static {
       jj_la1_init_0();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0x200000,0x100000,0xfc000,0xfc000,0xc00000,0xc00000,0x3000000,0x3000000,0x1280,0x280,};
+      jj_la1_0 = new int[] {0x200000,0x100000,0xfc000,0xfc000,0xc00000,0xc00000,0x3000000,0x3000000,0x1280,};
    }
 
   /** Constructor with InputStream. */
@@ -268,7 +253,7 @@ public class Parser implements ParserConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 10; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 9; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -282,7 +267,7 @@ public class Parser implements ParserConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 10; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 9; i++) jj_la1[i] = -1;
   }
 
   /** Constructor. */
@@ -299,7 +284,7 @@ public class Parser implements ParserConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 10; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 9; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -309,7 +294,7 @@ public class Parser implements ParserConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 10; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 9; i++) jj_la1[i] = -1;
   }
 
   /** Constructor with generated Token Manager. */
@@ -325,7 +310,7 @@ public class Parser implements ParserConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 10; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 9; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -334,7 +319,7 @@ public class Parser implements ParserConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 10; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 9; i++) jj_la1[i] = -1;
   }
 
   static private Token jj_consume_token(int kind) throws ParseException {
@@ -390,7 +375,7 @@ public class Parser implements ParserConstants {
       la1tokens[jj_kind] = true;
       jj_kind = -1;
     }
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 9; i++) {
       if (jj_la1[i] == jj_gen) {
         for (int j = 0; j < 32; j++) {
           if ((jj_la1_0[i] & (1<<j)) != 0) {

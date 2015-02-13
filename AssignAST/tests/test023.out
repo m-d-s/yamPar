@@ -1,1 +1,7 @@
-Invalid syntax at (5,1), j
+Assign
+  "i"
+  Assign
+    "j"
+    Assign
+      "k"
+      IntLit(0)

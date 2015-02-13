@@ -17,21 +17,21 @@ public class Parser implements ParserConstants {
 
 //- Parser Functions --------------------------------------------------
   static final public void Top() throws ParseException {
-    Expr();
+    Assign();
     jj_consume_token(0);
   }
 
-  static final public void Expr() throws ParseException {
+  static final public void Assign() throws ParseException {
     if (jj_2_1(2)) {
       jj_consume_token(IDENT);
       jj_consume_token(1);
-      Expr();
+      Assign();
     } else {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case INTLIT:
       case IDENT:
       case OPEN:
-        LogOr();
+        Expr();
         break;
       default:
         jj_la1[0] = jj_gen;
@@ -39,6 +39,10 @@ public class Parser implements ParserConstants {
         throw new ParseException();
       }
     }
+  }
+
+  static final public void Expr() throws ParseException {
+    LogOr();
   }
 
   static final public void LogOr() throws ParseException {

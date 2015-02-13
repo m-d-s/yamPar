@@ -30,15 +30,15 @@ public class Parser implements ParserConstants {
     if (jj_2_1(2)) {
       t = jj_consume_token(IDENT);
       jj_consume_token(1);
-      e = Expr();
-                            {if (true) return new Assign(t.image, e);}
+      e = Assign();
+                              {if (true) return new Assign(t.image, e);}
     } else {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case INTLIT:
       case IDENT:
       case OPEN:
         e = Expr();
-                            {if (true) return e;}
+                              {if (true) return e;}
         break;
       default:
         jj_la1[0] = jj_gen;
@@ -50,13 +50,20 @@ public class Parser implements ParserConstants {
   }
 
   static final public Expr Expr() throws ParseException {
-               Expr e, p;
+               Expr e;
     e = LogOr();
+      {if (true) return e;}
+    throw new Error("Missing return statement in function");
+  }
+
+  static final public Expr LogOr() throws ParseException {
+                Expr e, p;
+    e = LogAnd();
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case LOR:
       jj_consume_token(LOR);
-      p = Expr();
-                               e = new LOr(e,p);
+      p = LogOr();
+                                  e = new LOr(e,p);
       break;
     default:
       jj_la1[1] = jj_gen;
@@ -66,14 +73,14 @@ public class Parser implements ParserConstants {
     throw new Error("Missing return statement in function");
   }
 
-  static final public Expr LogOr() throws ParseException {
-                Expr e, p;
+  static final public Expr LogAnd() throws ParseException {
+                 Expr e, p;
     e = Comp();
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case LAND:
       jj_consume_token(LAND);
-      p = LogOr();
-                                e = new LAnd(e,p);
+      p = LogAnd();
+                                 e = new LAnd(e,p);
       break;
     default:
       jj_la1[2] = jj_gen;

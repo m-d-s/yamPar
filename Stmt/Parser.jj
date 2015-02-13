@@ -25,8 +25,10 @@ void Top(): { } {
 }
 
 void Stmt(): { } {
-   (("print" | "return")? Expr())? ";"
-  | Block() 
+   "print"  Expr()  ";"
+  |"return" (Expr())? ";"
+  |("while" <OPEN> Expr() <CLOSE>)? Block() 
+  |((Type())? Assign())? ";"
 }
 
 void Block(): { } {
@@ -34,52 +36,57 @@ void Block(): { } {
 }
 
 void Type(): { } {
-  "int" | "bool"
+  "int" | "boolean"
 }
 
- 
-void Expr(): { } {
+void Assign(): { } {
   LOOKAHEAD(2)
-  <IDENT> "=" Expr() 
-  | LogOr() (<LOR> Expr() )?
+  <IDENT> "="  Assign()
+  |           Expr()
 }
 
+void Expr(): { } {
+  LogOr()
+}
+  
 void LogOr(): { } {
-  Comp() ( <LAND> LogOr()  )?
+  LogAnd() (  <LOR>  LogOr() )?
+}
+
+void LogAnd(): { } {
+  Comp()   ( <LAND> LogAnd() )?
 }
 
 void Comp(): { } {
   AddSub() ( 
-    ( <LT>   AddSub()      )
-   |( <LTEQ> AddSub()      )
-   |( <GT>   AddSub()      )
-   |( <GTEQ> AddSub()      )
-   |( <NEQ>  AddSub()      )
-   |( <EQEQ> AddSub()      )
-  )?
+              <LT>   AddSub()      
+            | <LTEQ> AddSub()      
+            | <GT>   AddSub()      
+            | <GTEQ> AddSub()      
+            | <NEQ>  AddSub()      
+            | <EQEQ> AddSub()      
+           )?
 }
 
 void AddSub(): { } {
   MulDiv() (
-	     ( <ADD> MulDiv() AddSubP()      ) 
-	    |( <SUB> MulDiv() AddSubP()      ) 
+	      <ADD> MulDiv()
+	    | <SUB> MulDiv()  
 	   )*
      
 }
 
 void MulDiv(): { } {
   Atom()  (
-            ( <MUL> Atom() MulDivP() )
-           |( <DIV> Atom() MulDivP() )
+             <MUL> Atom()
+           | <DIV> Atom()
           )*
 }
 
-void Atom(): { } {
-  ( 
-    ( <OPEN> Expr() <CLOSE> )
-   |( <INTLIT>              )
-   |( <IDENT>               )
-  )
+void Atom(): { } { 
+   <OPEN> Expr() <CLOSE> 
+  |<INTLIT>              
+  |<IDENT>               
 }
 
 

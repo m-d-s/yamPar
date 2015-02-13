@@ -1,4 +1,4 @@
 1c1
 < Valid syntax
 ---
-> Invalid syntax at (0,0), null
+> Lexical error at line 1, column 6.  Encountered: "," (44), after : ""
