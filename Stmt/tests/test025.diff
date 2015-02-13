@@ -1,0 +1,4 @@
+1c1
+< Valid syntax
+---
+> Invalid syntax at (1,1), boolean

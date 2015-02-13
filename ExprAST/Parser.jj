@@ -1,0 +1,136 @@
+PARSER_BEGIN(Parser)
+import ast.*;
+public class Parser {
+  public static void main(String[] args) {
+     new Parser(System.in);
+     try {
+       Expr e = Top();
+       new IndentOutput(System.out).indent(e);
+     } catch (ParseException e) {
+       System.out.println("Invalid syntax at ("
+                          + token.beginColumn + ","
+                          + token.beginLine + "), "
+                          + token.image);
+     } catch (TokenMgrError e) {
+       System.out.println(e.getMessage());
+     }
+  }
+}
+PARSER_END(Parser)
+//- Parser Functions---------------------------------------------------
+Expr Top(): { Expr e; } {
+  e=Expr() <EOF> 
+    { return e; }
+}
+
+Expr Expr(): { Expr e; } {
+  e=LogOr()
+    { return e; }
+}
+
+Expr LogOr(): { Expr e, p; } {
+  e=LogAnd() ( <LOR> p=LogOr() { e = new LOr(e,p); } )?
+    { return e; }
+}
+
+Expr LogAnd(): { Expr e, p; } {
+  e=Comp() ( <LAND> p=LogAnd() { e = new LAnd(e,p); } )?
+    { return e; }
+}
+
+Expr Comp(): { Expr e, p; } {
+  e=AddSub() ( 
+     <LT>   p=AddSub() { e = new Lt(e,p);  }      
+   | <LTEQ> p=AddSub() { e = new Lte(e,p); }      
+   | <GT>   p=AddSub() { e = new Gt(e,p);  }      
+   | <GTEQ> p=AddSub() { e = new Gte(e,p); }      
+   | <NEQ>  p=AddSub() { e = new Neq(e,p); }      
+   | <EQEQ> p=AddSub() { e = new Eql(e,p); }      
+  )?
+    { return e; }
+}
+
+Expr AddSub(): { Expr e, p; } {
+  e=MulDiv() ( 
+	        <ADD> p = MulDiv() { e = new Add(e,p); } 
+	      | <SUB> p = MulDiv() { e = new Sub(e,p); } 
+	     )*
+    { return e; }
+}
+
+Expr MulDiv(): { Expr e, p; } {
+  e=Atom() ( 
+              <MUL> p = Atom() { e = new Mul(e,p); } 
+            | <DIV> p = Atom() { e = new Div(e,p); } 
+	   )*
+    { return e; }
+}
+
+Expr Atom(): { Expr e; } {
+  
+  <OPEN> e=Expr() <CLOSE> 
+  |      e=Term()
+    { return e; }   
+}
+
+Expr Term(): { Token t; } {
+ t=<IDENT>   { return new Id(t.image); }
+|t=<INTLIT>  { return new IntLit(Integer.parseInt(t.image)); }
+ 
+}
+
+
+//- Lexical Rules -----------------------------------------------------
+
+//Whitespace and comments
+SKIP : {
+  " "
+| "\t"
+| "\n"
+| "\r"
+| <"//" (~["\n","\r"])* ("\n" | "\r" | "\r\n")>
+| <"/*" (~["*"])* ("*" | ~["*","/"] (~["*"])* "*")* "/">
+}
+
+//Integer literal
+TOKEN : {
+  <INTLIT:     (<DIGIT>)+>
+| <#DIGIT:     ["0"-"9"] >
+}
+
+//Identifier
+TOKEN : {
+  <IDENT:      <BEGIN> ( <LETTER> | <DIGIT> )*>
+| <#BEGIN:     ["A"-"Z","a"-"z"]            >
+| <#LETTER:    <BEGIN> | ["_"]              >
+}
+
+//Parentheses
+TOKEN : {
+  <OPEN:       "(" >
+| <CLOSE:      ")" >
+}
+
+//Comparitor Operaters
+TOKEN : {
+  <LT:         "<" >
+| <LTEQ:       "<=">
+| <GT:         ">" >
+| <GTEQ:       ">=">
+| <NEQ:        "!=">
+| <EQEQ:       "==">
+}
+
+//Logical Operaters
+TOKEN : {
+  <LAND:       "&&">
+| <LOR:        "||">
+}
+
+//Arithmetic Operaters
+TOKEN : {
+  <ADD:        "+" >
+| <SUB:        "-" >
+| <MUL:        "*" >
+| <DIV:        "/" >
+}
