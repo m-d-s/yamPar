@@ -31,7 +31,7 @@ void Stmt(): { } {
   |"while" <OPEN>Expr()<CLOSE> Stmt()
   |"if" <OPEN>Expr()<CLOSE> Stmt() (LOOKAHEAD(1) "else" Stmt())? 
   | Type() Expr() ("," Expr())* ";"
-  | Expr() ";"
+  | StdAln()
   | ";"
 }
 
@@ -43,16 +43,16 @@ void Type(): { } {
   "int" | "boolean"
 }
 
-void Expr(): { } {
-  Assign()
+void StdAln(): { } {
+  <IDENT> "=" Expr() ";"
 }
 
-void Assign(): { } {
+void Expr(): { } {
   LOOKAHEAD(2)
-  <IDENT> "="  Assign()
-  |            LogOr()
+  <IDENT> "="  Expr()
+  |           LogOr()
 }
- 
+
 void LogOr(): { } {
   LogAnd() (  <LOR>  LogOr() )?
 }

@@ -17,21 +17,26 @@ public class Parser implements ParserConstants {
 
 //- Parser Functions --------------------------------------------------
   static final public void Top() throws ParseException {
-    Assign();
+    Expr();
     jj_consume_token(0);
   }
 
+  static final public void Expr() throws ParseException {
+    Assign();
+  }
+
   static final public void Assign() throws ParseException {
-    if (jj_2_1(2)) {
+    if (jj_2_1(3)) {
       jj_consume_token(IDENT);
       jj_consume_token(1);
       Assign();
+      jj_consume_token(2);
     } else {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case INTLIT:
       case IDENT:
       case OPEN:
-        Expr();
+        LogOr();
         break;
       default:
         jj_la1[0] = jj_gen;
@@ -39,10 +44,6 @@ public class Parser implements ParserConstants {
         throw new ParseException();
       }
     }
-  }
-
-  static final public void Expr() throws ParseException {
-    LogOr();
   }
 
   static final public void LogOr() throws ParseException {
@@ -217,9 +218,80 @@ public class Parser implements ParserConstants {
     finally { jj_save(0, xla); }
   }
 
+  static private boolean jj_3R_6() {
+    if (jj_3R_7()) return true;
+    return false;
+  }
+
+  static private boolean jj_3R_9() {
+    if (jj_3R_10()) return true;
+    return false;
+  }
+
+  static private boolean jj_3R_5() {
+    if (jj_3R_6()) return true;
+    return false;
+  }
+
+  static private boolean jj_3R_12() {
+    if (jj_3R_13()) return true;
+    return false;
+  }
+
+  static private boolean jj_3R_8() {
+    if (jj_3R_9()) return true;
+    return false;
+  }
+
   static private boolean jj_3_1() {
     if (jj_scan_token(IDENT)) return true;
     if (jj_scan_token(1)) return true;
+    if (jj_3R_3()) return true;
+    return false;
+  }
+
+  static private boolean jj_3R_3() {
+    Token xsp;
+    xsp = jj_scanpos;
+    if (jj_3_1()) {
+    jj_scanpos = xsp;
+    if (jj_3R_4()) return true;
+    }
+    return false;
+  }
+
+  static private boolean jj_3R_13() {
+    Token xsp;
+    xsp = jj_scanpos;
+    if (jj_scan_token(9)) {
+    jj_scanpos = xsp;
+    if (jj_scan_token(11)) return true;
+    }
+    return false;
+  }
+
+  static private boolean jj_3R_11() {
+    if (jj_scan_token(OPEN)) return true;
+    return false;
+  }
+
+  static private boolean jj_3R_10() {
+    Token xsp;
+    xsp = jj_scanpos;
+    if (jj_3R_11()) {
+    jj_scanpos = xsp;
+    if (jj_3R_12()) return true;
+    }
+    return false;
+  }
+
+  static private boolean jj_3R_4() {
+    if (jj_3R_5()) return true;
+    return false;
+  }
+
+  static private boolean jj_3R_7() {
+    if (jj_3R_8()) return true;
     return false;
   }
 
@@ -241,7 +313,7 @@ public class Parser implements ParserConstants {
       jj_la1_init_0();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0x2500,0x400000,0x200000,0x1f8000,0x1f8000,0x1800000,0x1800000,0x6000000,0x6000000,0x2500,0x500,};
+      jj_la1_0 = new int[] {0x4a00,0x800000,0x400000,0x3f0000,0x3f0000,0x3000000,0x3000000,0xc000000,0xc000000,0x4a00,0xa00,};
    }
   static final private JJCalls[] jj_2_rtns = new JJCalls[1];
   static private boolean jj_rescan = false;
@@ -451,7 +523,7 @@ public class Parser implements ParserConstants {
   /** Generate ParseException. */
   static public ParseException generateParseException() {
     jj_expentries.clear();
-    boolean[] la1tokens = new boolean[27];
+    boolean[] la1tokens = new boolean[28];
     if (jj_kind >= 0) {
       la1tokens[jj_kind] = true;
       jj_kind = -1;
@@ -465,7 +537,7 @@ public class Parser implements ParserConstants {
         }
       }
     }
-    for (int i = 0; i < 27; i++) {
+    for (int i = 0; i < 28; i++) {
       if (la1tokens[i]) {
         jj_expentry = new int[1];
         jj_expentry[0] = i;

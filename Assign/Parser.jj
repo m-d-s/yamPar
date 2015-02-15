@@ -21,17 +21,17 @@ PARSER_END(Parser)
 //- Parser Functions --------------------------------------------------
 
 void Top(): { } {
-  Assign() <EOF>
-}
-
-void Assign(): { } {
-  LOOKAHEAD(2)
-  <IDENT> "="  Assign()
-  |           Expr()
+  Expr() <EOF>
 }
 
 void Expr(): { } {
-  LogOr()
+  Assign()
+}
+
+void Assign(): { } {
+  LOOKAHEAD(3)
+  <IDENT> "="  Assign() ";"
+  |             LogOr()
 }
   
 void LogOr(): { } {

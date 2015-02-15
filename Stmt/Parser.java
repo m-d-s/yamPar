@@ -87,11 +87,8 @@ public class Parser implements ParserConstants {
       }
       jj_consume_token(2);
       break;
-    case INTLIT:
     case IDENT:
-    case OPEN:
-      Expr();
-      jj_consume_token(2);
+      StdAln();
       break;
     case 2:
       jj_consume_token(2);
@@ -116,9 +113,7 @@ public class Parser implements ParserConstants {
       case 8:
       case 10:
       case 11:
-      case INTLIT:
       case IDENT:
-      case OPEN:
         ;
         break;
       default:
@@ -145,15 +140,18 @@ public class Parser implements ParserConstants {
     }
   }
 
-  static final public void Expr() throws ParseException {
-    Assign();
+  static final public void StdAln() throws ParseException {
+    jj_consume_token(IDENT);
+    jj_consume_token(12);
+    Expr();
+    jj_consume_token(2);
   }
 
-  static final public void Assign() throws ParseException {
+  static final public void Expr() throws ParseException {
     if (jj_2_1(2)) {
       jj_consume_token(IDENT);
       jj_consume_token(12);
-      Assign();
+      Expr();
     } else {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case INTLIT:
@@ -354,7 +352,7 @@ public class Parser implements ParserConstants {
       jj_la1_init_1();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0x1280000,0x40,0x80,0x1280d3e,0x1280d3e,0xc00,0x1280000,0x0,0x0,0xfc000000,0xfc000000,0x0,0x0,0x0,0x0,0x1280000,};
+      jj_la1_0 = new int[] {0x1280000,0x40,0x80,0x200d3e,0x200d3e,0xc00,0x1280000,0x0,0x0,0xfc000000,0xfc000000,0x0,0x0,0x0,0x0,0x1280000,};
    }
    private static void jj_la1_init_1() {
       jj_la1_1 = new int[] {0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x2,0x1,0x0,0x0,0xc,0xc,0x30,0x30,0x0,};
