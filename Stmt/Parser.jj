@@ -27,8 +27,12 @@ void Top(): { } {
 void Stmt(): { } {
    "print"  Expr()  ";"
   |"return" (Expr())? ";"
-  |("while" <OPEN> Expr() <CLOSE>)? Block() 
-  |((Type())? Assign())? ";"
+  | Block()
+  |"while" <OPEN>Expr()<CLOSE> Stmt()
+  |"if" <OPEN>Expr()<CLOSE> Stmt() (LOOKAHEAD(1) "else" Stmt())? 
+  | Type() Expr() ("," Expr())* ";"
+  | Expr() ";"
+  | ";"
 }
 
 void Block(): { } {
@@ -39,16 +43,16 @@ void Type(): { } {
   "int" | "boolean"
 }
 
+void Expr(): { } {
+  Assign()
+}
+
 void Assign(): { } {
   LOOKAHEAD(2)
   <IDENT> "="  Assign()
-  |           Expr()
+  |            LogOr()
 }
-
-void Expr(): { } {
-  LogOr()
-}
-  
+ 
 void LogOr(): { } {
   LogAnd() (  <LOR>  LogOr() )?
 }
