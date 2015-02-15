@@ -4,8 +4,8 @@ public class Parser {
   public static void main(String[] args) {
      new Parser(System.in);
      try {
-       Expr e = Top();
-       new IndentOutput(System.out).indent(e);
+       Stmt s = Top();
+       new IndentOutput(System.out).indent(s);
      } catch (ParseException e) {
        System.out.println("Invalid syntax at ("
                           + token.beginColumn + ","
@@ -20,10 +20,39 @@ PARSER_END(Parser)
 
 //- Parser Functions --------------------------------------------------
 
-Expr Top(): { Expr e; } {
-  LOOKAHEAD(3)
-  e=StdAln() <EOF> { return e; }
-  |e=Expr()   <EOF> { return e; }
+Stmt Top(): { Stmt s; } {
+  s=Stmt() <EOF> { return s; }
+}
+
+Stmt Stmt(): { Stmt s, l = null; Expr e = null; } {
+  "print" e=Expr() ";"                     { return new   Print(e); }
+ |"return" ( e=Expr() )? ";"               { return new  Return(e); }
+ | s=Block()                               {              return s; }
+ | "while" <OPEN>e=Expr()<CLOSE>  s=Stmt() { return new While(e,s); }
+ | "if"    <OPEN>e=Expr()<CLOSE>  s=Stmt()
+     (LOOKAHEAD(1) "else" l=Stmt())?       { return new  If(e,s,l); } 
+  | Type() Expr() ("," Expr())* ";"
+  | StdAln()
+  | ";"
+
+}
+
+Stmt Block(): { Stmt[] stmts; } {
+  "{" stmts=Stmts(0) "}"
+  { return new Block(stmts); }
+}
+
+Stmt[] Stmts(int soFar): { Stmt s; Stmt[] stmts; } {
+  (s=Stmt() stmts=Stmts(soFar+1)
+    { stmts[soFar]=s; return stmts; }
+  | { return new Stmt[soFar]; })
+}
+
+...
+
+Type Type(): { } {
+  ( "int"     { return Type.INT; }
+  | "boolean" { return Type.BOOLEAN; })
 }
 
 Expr StdAln(): { Expr e; Token t; } {
