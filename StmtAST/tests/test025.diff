@@ -1,0 +1,8 @@
+1,5c1
+< Locals
+<   boolean
+<   InitVarIntro
+<     "x"
+<     Id("y")
+---
+> Invalid syntax at (0,0), null

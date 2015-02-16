@@ -1,0 +1,15 @@
+1,12c1
+< Locals
+<   int
+<   VarIntro
+<     "x"
+<   InitVarIntro
+<     "y"
+<     Id("x")
+<   VarIntro
+<     "z"
+<   InitVarIntro
+<     "t"
+<     IntLit(1)
+---
+> Invalid syntax at (0,0), null

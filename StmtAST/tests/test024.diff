@@ -1,0 +1,7 @@
+1,4c1
+< Locals
+<   int
+<   VarIntro
+<     "x"
+---
+> Invalid syntax at (0,0), null

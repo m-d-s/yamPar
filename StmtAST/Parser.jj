@@ -24,16 +24,16 @@ Stmt Top(): { Stmt s; } {
   s=Stmt() <EOF> { return s; }
 }
 
-Stmt Stmt(): { Stmt s, l = null; Expr e = null; } {
+Stmt Stmt(): { Stmt s, l = null; Expr e = null; StmtExpr m; } {
   "print" e=Expr() ";"                     { return new   Print(e); }
  |"return" ( e=Expr() )? ";"               { return new  Return(e); }
  | s=Block()                               {              return s; }
  | "while" <OPEN>e=Expr()<CLOSE>  s=Stmt() { return new While(e,s); }
  | "if"    <OPEN>e=Expr()<CLOSE>  s=Stmt()
      (LOOKAHEAD(1) "else" l=Stmt())?       { return new  If(e,s,l); } 
-  | Type() Expr() ("," Expr())* ";"
-  | StdAln()
-  | ";"
+ //| Type() Expr() ("," Expr())* ";"
+ | m=StdAln()				   { return new ExprStmt(m); }
+ | ";"
 
 }
 
@@ -47,22 +47,28 @@ Stmt[] Stmts(int soFar): { Stmt s; Stmt[] stmts; } {
     { stmts[soFar]=s; return stmts; }
   | { return new Stmt[soFar]; })
 }
+/*
+Stmt Decl(): { Expr[] exprs; Type y; } {
+  
+}
 
-...
+Expr Exprs(int soFar): { Expr e; Expr[] exprs; } {
 
+}
+*/
 Type Type(): { } {
   ( "int"     { return Type.INT; }
   | "boolean" { return Type.BOOLEAN; })
 }
 
-Expr StdAln(): { Expr e; Token t; } {
+StmtExpr StdAln(): { Expr e; Token t; } {
   t=<IDENT> "=" e=Expr() ";"  { return new Assign(t.image, e); }
 } 
 
 Expr Expr(): { Expr e; Token t; } {
   LOOKAHEAD(2)
   t =<IDENT> "=" e=Expr()   { return new Assign(t.image, e); }
-  |e=LogOr()                { return e;                      }
+  |e=LogOr()                { return e;        }
 }
 
 Expr LogOr(): { Expr e, p; } {
