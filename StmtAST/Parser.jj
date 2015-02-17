@@ -1,3 +1,4 @@
+//options { DEBUG_PARSER = true; } 
 PARSER_BEGIN(Parser)
 import ast.*;
 public class Parser {
@@ -24,16 +25,16 @@ Stmt Top(): { Stmt s; } {
   s=Stmt() <EOF> { return s; }
 }
 
-Stmt Stmt(): { Stmt s, l = null; Expr e = null; StmtExpr m; Type y; VarIntro[] v; } {
+Stmt Stmt(): { Stmt s, l = null; Expr e = null; StmtExpr m; } {
   "print" e=Expr() ";"                     { return new   Print(e);  }
  |"return" ( e=Expr() )? ";"               { return new  Return(e);  }
  | s=Block()                               { return s;               }
  | "while" <OPEN>e=Expr()<CLOSE>  s=Stmt() { return new While(e,s);  }
  | "if"    <OPEN>e=Expr()<CLOSE>  s=Stmt()
      (LOOKAHEAD(1) "else" l=Stmt())?       { return new  If(e,s,l);  } 
- | y=Type() v=Decl()                                { return new Locals(y,v); }
+ | s=Decl()                                { return s;               }
  | m=StdAln()				   { return new ExprStmt(m); }
- | ";"					   { return new Empty(); }
+ | ";"					   { return new Empty();     }
 }
 
 Stmt Block(): { Stmt[] stmts; } {
@@ -47,17 +48,20 @@ Stmt[] Stmts(int soFar): { Stmt s; Stmt[] stmts; } {
   | { return new Stmt[soFar]; })
 }
 
-VarIntro[] Decl(): { VarIntro[] intros; } {
-  intros = Intros(0) ";"
-  { return intros; } 
+Stmt Decl(): { Type y; VarIntro[] intros; } {
+  y=Type() intros = Intros(0) ";"
+  { return new Locals(y,intros); } 
 }
 
-VarIntro[] Intros(int soFar): { VarIntro[] intros; Token d; Expr l = null; } {
-  
-  ( (LOOKAHEAD(2) ("," d=<IDENT> "=" l=Expr()) | ("," d=<IDENT>) ) 
-  intros=Intros(soFar+1)
-    { intros[soFar] = new InitVarIntro(d.image,l); return intros; }
-  | {return new VarIntro[soFar]; })
+VarIntro Var(): { Token t; Expr e; } {
+  t=<IDENT> ( "=" e=Expr() { return new InitVarIntro(t.image,e); })?
+    { return new VarIntro(t.image); } 
+}
+
+VarIntro[] Intros(int soFar): { VarIntro[] intros; VarIntro v; } {
+  v=Var() ("," intros = Intros(soFar+1) { intros[soFar] = v; return intros;})?
+  intros=Intros(soFar+1) { intros[soFar] = v; return intros;} 
+  |  { return new VarIntro[soFar]; }  
 }
 
 Type Type(): { } {

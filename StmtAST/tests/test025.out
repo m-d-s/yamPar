@@ -1,1 +1,5 @@
-Invalid syntax at (1,1), boolean
+Locals
+  boolean
+  InitVarIntro
+    "x"
+    Id("y")
