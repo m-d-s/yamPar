@@ -24,17 +24,16 @@ Stmt Top(): { Stmt s; } {
   s=Stmt() <EOF> { return s; }
 }
 
-Stmt Stmt(): { Stmt s, l = null; Expr e = null; StmtExpr m; } {
-  "print" e=Expr() ";"                     { return new   Print(e); }
- |"return" ( e=Expr() )? ";"               { return new  Return(e); }
- | s=Block()                               {              return s; }
- | "while" <OPEN>e=Expr()<CLOSE>  s=Stmt() { return new While(e,s); }
+Stmt Stmt(): { Stmt s, l = null; Expr e = null; StmtExpr m; Type y; VarIntro[] v; } {
+  "print" e=Expr() ";"                     { return new   Print(e);  }
+ |"return" ( e=Expr() )? ";"               { return new  Return(e);  }
+ | s=Block()                               { return s;               }
+ | "while" <OPEN>e=Expr()<CLOSE>  s=Stmt() { return new While(e,s);  }
  | "if"    <OPEN>e=Expr()<CLOSE>  s=Stmt()
-     (LOOKAHEAD(1) "else" l=Stmt())?       { return new  If(e,s,l); } 
- //| Type() Expr() ("," Expr())* ";"
+     (LOOKAHEAD(1) "else" l=Stmt())?       { return new  If(e,s,l);  } 
+ | y=Type() v=Decl()                                { return new Locals(y,v); }
  | m=StdAln()				   { return new ExprStmt(m); }
- | ";"
-
+ | ";"					   { return new Empty(); }
 }
 
 Stmt Block(): { Stmt[] stmts; } {
@@ -47,15 +46,20 @@ Stmt[] Stmts(int soFar): { Stmt s; Stmt[] stmts; } {
     { stmts[soFar]=s; return stmts; }
   | { return new Stmt[soFar]; })
 }
-/*
-Stmt Decl(): { Expr[] exprs; Type y; } {
+
+VarIntro[] Decl(): { VarIntro[] intros; } {
+  intros = Intros(0) ";"
+  { return intros; } 
+}
+
+VarIntro[] Intros(int soFar): { VarIntro[] intros; Token d; Expr l = null; } {
   
+  ( (LOOKAHEAD(2) ("," d=<IDENT> "=" l=Expr()) | ("," d=<IDENT>) ) 
+  intros=Intros(soFar+1)
+    { intros[soFar] = new InitVarIntro(d.image,l); return intros; }
+  | {return new VarIntro[soFar]; })
 }
 
-Expr Exprs(int soFar): { Expr e; Expr[] exprs; } {
-
-}
-*/
 Type Type(): { } {
   ( "int"     { return Type.INT; }
   | "boolean" { return Type.BOOLEAN; })

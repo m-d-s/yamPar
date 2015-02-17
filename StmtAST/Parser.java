@@ -26,7 +26,7 @@ public class Parser implements ParserConstants {
   }
 
   static final public Stmt Stmt() throws ParseException {
-               Stmt s, l = null; Expr e = null; StmtExpr m;
+               Stmt s, l = null; Expr e = null; StmtExpr m; Type y; VarIntro[] v;
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case 1:
       jj_consume_token(1);
@@ -51,7 +51,7 @@ public class Parser implements ParserConstants {
       break;
     case 7:
       s = Block();
-                                                          {if (true) return s;}
+                                             {if (true) return s;}
       break;
     case 4:
       jj_consume_token(4);
@@ -78,12 +78,19 @@ public class Parser implements ParserConstants {
       }
                                              {if (true) return new  If(e,s,l);}
       break;
+    case 11:
+    case 12:
+      y = Type();
+      v = Decl();
+                                                      {if (true) return new Locals(y,v);}
+      break;
     case IDENT:
       m = StdAln();
                                              {if (true) return new ExprStmt(m);}
       break;
     case 2:
       jj_consume_token(2);
+                                             {if (true) return new Empty();}
       break;
     default:
       jj_la1[2] = jj_gen;
@@ -111,6 +118,8 @@ public class Parser implements ParserConstants {
     case 4:
     case 5:
     case 7:
+    case 11:
+    case 12:
     case IDENT:
       s = Stmt();
       stmts = Stmts(soFar+1);
@@ -123,27 +132,57 @@ public class Parser implements ParserConstants {
     throw new Error("Missing return statement in function");
   }
 
-/*
-Stmt Decl(): { Expr[] exprs; Type y; } {
-  
-}
+  static final public VarIntro[] Decl() throws ParseException {
+                     VarIntro[] intros;
+    intros = Intros(0);
+    jj_consume_token(2);
+    {if (true) return intros;}
+    throw new Error("Missing return statement in function");
+  }
 
-Expr Exprs(int soFar): { Expr e; Expr[] exprs; } {
-
-}
-*/
-  static final public Type Type() throws ParseException {
+  static final public VarIntro[] Intros(int soFar) throws ParseException {
+                                VarIntro[] intros; Token d; Expr l = null;
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case 9:
-      jj_consume_token(9);
+      if (jj_2_1(2)) {
+        jj_consume_token(9);
+        d = jj_consume_token(IDENT);
+        jj_consume_token(10);
+        l = Expr();
+      } else {
+        switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+        case 9:
+          jj_consume_token(9);
+          d = jj_consume_token(IDENT);
+          break;
+        default:
+          jj_la1[4] = jj_gen;
+          jj_consume_token(-1);
+          throw new ParseException();
+        }
+      }
+      intros = Intros(soFar+1);
+      intros[soFar] = new InitVarIntro(d.image,l); {if (true) return intros;}
+      break;
+    default:
+      jj_la1[5] = jj_gen;
+     {if (true) return new VarIntro[soFar];}
+    }
+    throw new Error("Missing return statement in function");
+  }
+
+  static final public Type Type() throws ParseException {
+    switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+    case 11:
+      jj_consume_token(11);
                 {if (true) return Type.INT;}
       break;
-    case 10:
-      jj_consume_token(10);
+    case 12:
+      jj_consume_token(12);
                 {if (true) return Type.BOOLEAN;}
       break;
     default:
-      jj_la1[4] = jj_gen;
+      jj_la1[6] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -153,7 +192,7 @@ Expr Exprs(int soFar): { Expr e; Expr[] exprs; } {
   static final public StmtExpr StdAln() throws ParseException {
                      Expr e; Token t;
     t = jj_consume_token(IDENT);
-    jj_consume_token(11);
+    jj_consume_token(10);
     e = Expr();
     jj_consume_token(2);
                                 {if (true) return new Assign(t.image, e);}
@@ -162,9 +201,9 @@ Expr Exprs(int soFar): { Expr e; Expr[] exprs; } {
 
   static final public Expr Expr() throws ParseException {
                Expr e; Token t;
-    if (jj_2_1(2)) {
+    if (jj_2_2(2)) {
       t = jj_consume_token(IDENT);
-      jj_consume_token(11);
+      jj_consume_token(10);
       e = Expr();
                               {if (true) return new Assign(t.image, e);}
     } else {
@@ -176,7 +215,7 @@ Expr Exprs(int soFar): { Expr e; Expr[] exprs; } {
                               {if (true) return e;}
         break;
       default:
-        jj_la1[5] = jj_gen;
+        jj_la1[7] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
@@ -194,7 +233,7 @@ Expr Exprs(int soFar): { Expr e; Expr[] exprs; } {
                                   e = new LOr(e,p);
       break;
     default:
-      jj_la1[6] = jj_gen;
+      jj_la1[8] = jj_gen;
       ;
     }
       {if (true) return e;}
@@ -211,7 +250,7 @@ Expr Exprs(int soFar): { Expr e; Expr[] exprs; } {
                                  e = new LAnd(e,p);
       break;
     default:
-      jj_la1[7] = jj_gen;
+      jj_la1[9] = jj_gen;
       ;
     }
       {if (true) return e;}
@@ -260,13 +299,13 @@ Expr Exprs(int soFar): { Expr e; Expr[] exprs; } {
                           e = new Eql(e,p);
         break;
       default:
-        jj_la1[8] = jj_gen;
+        jj_la1[10] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
       break;
     default:
-      jj_la1[9] = jj_gen;
+      jj_la1[11] = jj_gen;
       ;
     }
       {if (true) return e;}
@@ -284,7 +323,7 @@ Expr Exprs(int soFar): { Expr e; Expr[] exprs; } {
         ;
         break;
       default:
-        jj_la1[10] = jj_gen;
+        jj_la1[12] = jj_gen;
         break label_1;
       }
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
@@ -299,7 +338,7 @@ Expr Exprs(int soFar): { Expr e; Expr[] exprs; } {
                                       e = new Sub(e,p);
         break;
       default:
-        jj_la1[11] = jj_gen;
+        jj_la1[13] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
@@ -319,7 +358,7 @@ Expr Exprs(int soFar): { Expr e; Expr[] exprs; } {
         ;
         break;
       default:
-        jj_la1[12] = jj_gen;
+        jj_la1[14] = jj_gen;
         break label_2;
       }
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
@@ -334,7 +373,7 @@ Expr Exprs(int soFar): { Expr e; Expr[] exprs; } {
                                   e = new Div(e,p);
         break;
       default:
-        jj_la1[13] = jj_gen;
+        jj_la1[15] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
@@ -361,7 +400,7 @@ Expr Exprs(int soFar): { Expr e; Expr[] exprs; } {
                               {if (true) return e;}
       break;
     default:
-      jj_la1[14] = jj_gen;
+      jj_la1[16] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -375,9 +414,22 @@ Expr Exprs(int soFar): { Expr e; Expr[] exprs; } {
     finally { jj_save(0, xla); }
   }
 
-  static private boolean jj_3_1() {
+  static private boolean jj_2_2(int xla) {
+    jj_la = xla; jj_lastpos = jj_scanpos = token;
+    try { return !jj_3_2(); }
+    catch(LookaheadSuccess ls) { return true; }
+    finally { jj_save(1, xla); }
+  }
+
+  static private boolean jj_3_2() {
     if (jj_scan_token(IDENT)) return true;
-    if (jj_scan_token(11)) return true;
+    if (jj_scan_token(10)) return true;
+    return false;
+  }
+
+  static private boolean jj_3_1() {
+    if (jj_scan_token(9)) return true;
+    if (jj_scan_token(IDENT)) return true;
     return false;
   }
 
@@ -393,7 +445,7 @@ Expr Exprs(int soFar): { Expr e; Expr[] exprs; } {
   static private Token jj_scanpos, jj_lastpos;
   static private int jj_la;
   static private int jj_gen;
-  static final private int[] jj_la1 = new int[15];
+  static final private int[] jj_la1 = new int[17];
   static private int[] jj_la1_0;
   static private int[] jj_la1_1;
   static {
@@ -401,12 +453,12 @@ Expr Exprs(int soFar): { Expr e; Expr[] exprs; } {
       jj_la1_init_1();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0x940000,0x40,0x1000be,0x1000be,0x600,0x940000,0x0,0x80000000,0x7e000000,0x7e000000,0x0,0x0,0x0,0x0,0x940000,};
+      jj_la1_0 = new int[] {0x1280000,0x40,0x2018be,0x2018be,0x200,0x200,0x1800,0x1280000,0x0,0x0,0xfc000000,0xfc000000,0x0,0x0,0x0,0x0,0x1280000,};
    }
    private static void jj_la1_init_1() {
-      jj_la1_1 = new int[] {0x0,0x0,0x0,0x0,0x0,0x0,0x1,0x0,0x0,0x0,0x6,0x6,0x18,0x18,0x0,};
+      jj_la1_1 = new int[] {0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x2,0x1,0x0,0x0,0xc,0xc,0x30,0x30,0x0,};
    }
-  static final private JJCalls[] jj_2_rtns = new JJCalls[1];
+  static final private JJCalls[] jj_2_rtns = new JJCalls[2];
   static private boolean jj_rescan = false;
   static private int jj_gc = 0;
 
@@ -428,7 +480,7 @@ Expr Exprs(int soFar): { Expr e; Expr[] exprs; } {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 15; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 17; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
@@ -443,7 +495,7 @@ Expr Exprs(int soFar): { Expr e; Expr[] exprs; } {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 15; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 17; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
@@ -461,7 +513,7 @@ Expr Exprs(int soFar): { Expr e; Expr[] exprs; } {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 15; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 17; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
@@ -472,7 +524,7 @@ Expr Exprs(int soFar): { Expr e; Expr[] exprs; } {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 15; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 17; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
@@ -489,7 +541,7 @@ Expr Exprs(int soFar): { Expr e; Expr[] exprs; } {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 15; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 17; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
@@ -499,7 +551,7 @@ Expr Exprs(int soFar): { Expr e; Expr[] exprs; } {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 15; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 17; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
@@ -614,12 +666,12 @@ Expr Exprs(int soFar): { Expr e; Expr[] exprs; } {
   /** Generate ParseException. */
   static public ParseException generateParseException() {
     jj_expentries.clear();
-    boolean[] la1tokens = new boolean[37];
+    boolean[] la1tokens = new boolean[38];
     if (jj_kind >= 0) {
       la1tokens[jj_kind] = true;
       jj_kind = -1;
     }
-    for (int i = 0; i < 15; i++) {
+    for (int i = 0; i < 17; i++) {
       if (jj_la1[i] == jj_gen) {
         for (int j = 0; j < 32; j++) {
           if ((jj_la1_0[i] & (1<<j)) != 0) {
@@ -631,7 +683,7 @@ Expr Exprs(int soFar): { Expr e; Expr[] exprs; } {
         }
       }
     }
-    for (int i = 0; i < 37; i++) {
+    for (int i = 0; i < 38; i++) {
       if (la1tokens[i]) {
         jj_expentry = new int[1];
         jj_expentry[0] = i;
@@ -658,7 +710,7 @@ Expr Exprs(int soFar): { Expr e; Expr[] exprs; } {
 
   static private void jj_rescan_token() {
     jj_rescan = true;
-    for (int i = 0; i < 1; i++) {
+    for (int i = 0; i < 2; i++) {
     try {
       JJCalls p = jj_2_rtns[i];
       do {
@@ -666,6 +718,7 @@ Expr Exprs(int soFar): { Expr e; Expr[] exprs; } {
           jj_la = p.arg; jj_lastpos = jj_scanpos = p.first;
           switch (i) {
             case 0: jj_3_1(); break;
+            case 1: jj_3_2(); break;
           }
         }
         p = p.next;

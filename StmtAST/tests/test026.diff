@@ -12,4 +12,4 @@
 <     "t"
 <     IntLit(1)
 ---
-> Invalid syntax at (0,0), null
+> Invalid syntax at (1,1), int

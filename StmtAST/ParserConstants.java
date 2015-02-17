@@ -9,43 +9,43 @@ public interface ParserConstants {
   /** End of File. */
   int EOF = 0;
   /** RegularExpression Id. */
-  int INTLIT = 18;
+  int INTLIT = 19;
   /** RegularExpression Id. */
-  int DIGIT = 19;
+  int DIGIT = 20;
   /** RegularExpression Id. */
-  int IDENT = 20;
+  int IDENT = 21;
   /** RegularExpression Id. */
-  int BEGIN = 21;
+  int BEGIN = 22;
   /** RegularExpression Id. */
-  int LETTER = 22;
+  int LETTER = 23;
   /** RegularExpression Id. */
-  int OPEN = 23;
+  int OPEN = 24;
   /** RegularExpression Id. */
-  int CLOSE = 24;
+  int CLOSE = 25;
   /** RegularExpression Id. */
-  int LT = 25;
+  int LT = 26;
   /** RegularExpression Id. */
-  int LTEQ = 26;
+  int LTEQ = 27;
   /** RegularExpression Id. */
-  int GT = 27;
+  int GT = 28;
   /** RegularExpression Id. */
-  int GTEQ = 28;
+  int GTEQ = 29;
   /** RegularExpression Id. */
-  int NEQ = 29;
+  int NEQ = 30;
   /** RegularExpression Id. */
-  int EQEQ = 30;
+  int EQEQ = 31;
   /** RegularExpression Id. */
-  int LAND = 31;
+  int LAND = 32;
   /** RegularExpression Id. */
-  int LOR = 32;
+  int LOR = 33;
   /** RegularExpression Id. */
-  int ADD = 33;
+  int ADD = 34;
   /** RegularExpression Id. */
-  int SUB = 34;
+  int SUB = 35;
   /** RegularExpression Id. */
-  int MUL = 35;
+  int MUL = 36;
   /** RegularExpression Id. */
-  int DIV = 36;
+  int DIV = 37;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -61,15 +61,16 @@ public interface ParserConstants {
     "\"else\"",
     "\"{\"",
     "\"}\"",
+    "\",\"",
+    "\"=\"",
     "\"int\"",
     "\"boolean\"",
-    "\"=\"",
     "\" \"",
     "\"\\t\"",
     "\"\\n\"",
     "\"\\r\"",
-    "<token of kind 16>",
     "<token of kind 17>",
+    "<token of kind 18>",
     "<INTLIT>",
     "<DIGIT>",
     "<IDENT>",
