@@ -1,0 +1,164 @@
+options { DEBUG_PARSER = true; } 
+
+PARSER_BEGIN(Parser)
+
+public class Parser {
+  public static void main(String[] args) {
+     new Parser(System.in);
+     try {
+       Top();
+       System.out.println("Valid syntax");
+     } catch (ParseException e) {
+       System.out.println("Invalid syntax at ("
+                          + token.beginColumn + ","
+                          + token.beginLine + "), "
+                          + token.image);
+     } catch (TokenMgrError e) {
+       System.out.println(e.getMessage());
+     }
+  }
+}
+PARSER_END(Parser)
+
+//- Parser Functions --------------------------------------------------
+
+void Top(): { } {
+  TopDefs() <EOF>
+}
+
+void TopDefs(): { } {
+  (LOOKAHEAD(3)
+   Type() Expr() ("," Expr())* ";"
+  |("void" | Type())  Fun() Block()
+  )
+}
+
+
+void Fun(): { } {
+  <IDENT> <OPEN> (Type() <IDENT>)* <CLOSE>
+}
+
+void Stmt(): { } {
+   "print"  Expr()  ";"
+  |"return" (Expr())? ";"
+  | Block()
+  |"while" <OPEN>Expr()<CLOSE> Stmt()
+  |"if" <OPEN>Expr()<CLOSE> Stmt() (LOOKAHEAD(1) "else" Stmt())? 
+  | Type() Expr() ("," Expr())* ";"
+  | StdAln())
+  | ";"
+}
+
+void Block(): { } {
+  "{" (Stmt())* "}"
+}
+
+void Type(): { } {
+  "int" | "boolean"
+}
+
+void StdAln(): { } {
+  <IDENT> "=" Expr() ";"
+}
+
+void Expr(): { } {
+  LOOKAHEAD(2)
+   <IDENT> "="  Expr()
+  |            LogOr()
+}
+
+void LogOr(): { } {
+  LogAnd() (  <LOR>  LogOr() )?
+}
+
+void LogAnd(): { } {
+  Comp()   ( <LAND> LogAnd() )?
+}
+
+void Comp(): { } {
+  AddSub() ( 
+              <LT>   AddSub()      
+            | <LTEQ> AddSub()      
+            | <GT>   AddSub()      
+            | <GTEQ> AddSub()      
+            | <NEQ>  AddSub()      
+            | <EQEQ> AddSub()      
+           )?
+}
+
+void AddSub(): { } {
+  MulDiv() (
+	      <ADD> MulDiv()
+	    | <SUB> MulDiv()  
+	   )*
+     
+}
+
+void MulDiv(): { } {
+  Atom()  (
+             <MUL> Atom()
+           | <DIV> Atom()
+          )*
+}
+
+void Atom(): { } { 
+   <OPEN> Expr() <CLOSE> 
+  |<INTLIT>              
+  |<IDENT>               
+}
+
+
+//- Lexical Rules -----------------------------------------------------
+
+//Whitespace and comments
+SKIP : {
+  " "
+| "\t"
+| "\n"
+| "\r"
+| <"//" (~["\n","\r"])* ("\n" | "\r" | "\r\n")>
+| <"/*" (~["*"])* ("*" | ~["*","/"] (~["*"])* "*")* "/">
+}
+
+//Integer literal
+TOKEN : {
+  <INTLIT:     (<DIGIT>)+>
+| <#DIGIT:     ["0"-"9"] >
+}
+
+//Identifier
+TOKEN : {
+  <IDENT:      <BEGIN> ( <LETTER> | <DIGIT> )*>
+| <#BEGIN:       ["A"-"Z","a"-"z"]            >
+| <#LETTER:      <BEGIN> | ["_"]              >
+}
+
+//Parentheses
+TOKEN : {
+  <OPEN:        "(" >
+| <CLOSE:       ")" >
+}
+
+//Comparitor Operaters
+TOKEN : {
+  <LT:          "<" >
+| <LTEQ:        "<=">
+| <GT:          ">" >
+| <GTEQ:        ">=">
+| <NEQ:         "!=">
+| <EQEQ:        "==">
+}
+
+//Logical Operaters
+TOKEN : {
+  <LAND:        "&&">
+| <LOR:         "||">
+}
+
+//Arithmetic Operaters
+TOKEN : {
+  <ADD:         "+" >
+| <SUB:         "-" >
+| <MUL:         "*" >
+| <DIV:         "/" >
+}
