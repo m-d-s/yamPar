@@ -1,1 +1,343 @@
+Call:   Top
+  Call:   TopDefs
+    Call:   Type
+      Consumed token: <"int" at line 1 column 1>
+    Return: Type
+    Call:   Expr
+      Consumed token: <<IDENT>: "count" at line 1 column 5>
+      Consumed token: <"=" at line 1 column 11>
+      Call:   Expr
+        Call:   LogOr
+          Call:   LogAnd
+            Call:   Comp
+              Call:   AddSub
+                Call:   MulDiv
+                  Call:   Atom
+                    Consumed token: <<INTLIT>: "0" at line 1 column 13>
+                  Return: Atom
+                Return: MulDiv
+              Return: AddSub
+            Return: Comp
+          Return: LogAnd
+        Return: LogOr
+      Return: Expr
+    Return: Expr
+    Consumed token: <";" at line 1 column 14>
+    Call:   Fun
+      Call:   Type
+        Consumed token: <"int" at line 3 column 1>
+      Return: Type
+      Consumed token: <<IDENT>: "fact" at line 3 column 5>
+      Consumed token: <"(" at line 3 column 9>
+      Call:   Formals
+        Call:   Type
+          Consumed token: <"int" at line 3 column 10>
+        Return: Type
+        Consumed token: <<IDENT>: "n" at line 3 column 14>
+      Return: Formals
+      Consumed token: <")" at line 3 column 15>
+      Call:   Block
+        Consumed token: <"{" at line 3 column 17>
+        Call:   Stmt
+          Call:   StdAln
+            Consumed token: <<IDENT>: "count" at line 4 column 3>
+            Consumed token: <"=" at line 4 column 9>
+            Call:   Expr
+              Call:   LogOr
+                Call:   LogAnd
+                  Call:   Comp
+                    Call:   AddSub
+                      Call:   MulDiv
+                        Call:   Atom
+                          Consumed token: <<IDENT>: "count" at line 4 column 11>
+                        Return: Atom
+                      Return: MulDiv
+                      Consumed token: <"+" at line 4 column 17>
+                      Call:   MulDiv
+                        Call:   Atom
+                          Consumed token: <<INTLIT>: "1" at line 4 column 19>
+                        Return: Atom
+                      Return: MulDiv
+                    Return: AddSub
+                  Return: Comp
+                Return: LogAnd
+              Return: LogOr
+            Return: Expr
+            Consumed token: <";" at line 4 column 20>
+          Return: StdAln
+        Return: Stmt
+        Call:   Stmt
+          Consumed token: <"if" at line 5 column 3>
+          Consumed token: <"(" at line 5 column 6>
+          Call:   Expr
+            Call:   LogOr
+              Call:   LogAnd
+                Call:   Comp
+                  Call:   AddSub
+                    Call:   MulDiv
+                      Call:   Atom
+                        Consumed token: <<IDENT>: "n" at line 5 column 7>
+                      Return: Atom
+                    Return: MulDiv
+                  Return: AddSub
+                  Consumed token: <"<" at line 5 column 8>
+                  Call:   AddSub
+                    Call:   MulDiv
+                      Call:   Atom
+                        Consumed token: <<INTLIT>: "1" at line 5 column 9>
+                      Return: Atom
+                    Return: MulDiv
+                  Return: AddSub
+                Return: Comp
+              Return: LogAnd
+            Return: LogOr
+          Return: Expr
+          Consumed token: <")" at line 5 column 10>
+          Call:   Stmt
+            Consumed token: <"return" at line 6 column 5>
+            Call:   Expr
+              Call:   LogOr
+                Call:   LogAnd
+                  Call:   Comp
+                    Call:   AddSub
+                      Call:   MulDiv
+                        Call:   Atom
+                          Consumed token: <<INTLIT>: "1" at line 6 column 12>
+                        Return: Atom
+                      Return: MulDiv
+                    Return: AddSub
+                  Return: Comp
+                Return: LogAnd
+              Return: LogOr
+            Return: Expr
+            Consumed token: <";" at line 6 column 13>
+          Return: Stmt
+          Consumed token: <"else" at line 7 column 3>
+          Call:   Stmt
+            Consumed token: <"return" at line 8 column 5>
+            Call:   Expr
+              Call:   LogOr
+                Call:   LogAnd
+                  Call:   Comp
+                    Call:   AddSub
+                      Call:   MulDiv
+                        Call:   Atom
+                          Consumed token: <<IDENT>: "n" at line 8 column 12>
+                        Return: Atom
+                        Consumed token: <"*" at line 8 column 14>
+                        Call:   Atom
+                          Call:   FunCall
+                            Consumed token: <<IDENT>: "fact" at line 8 column 16>
+                            Consumed token: <"(" at line 8 column 20>
+                            Call:   Expr
+                              Call:   LogOr
+                                Call:   LogAnd
+                                  Call:   Comp
+                                    Call:   AddSub
+                                      Call:   MulDiv
+                                        Call:   Atom
+                                          Consumed token: <<IDENT>: "n" at line 8 column 21>
+                                        Return: Atom
+                                      Return: MulDiv
+                                      Consumed token: <"-" at line 8 column 22>
+                                      Call:   MulDiv
+                                        Call:   Atom
+                                          Consumed token: <<INTLIT>: "1" at line 8 column 23>
+                                        Return: Atom
+                                      Return: MulDiv
+                                    Return: AddSub
+                                  Return: Comp
+                                Return: LogAnd
+                              Return: LogOr
+                            Return: Expr
+                            Consumed token: <")" at line 8 column 24>
+                          Return: FunCall
+                        Return: Atom
+                      Return: MulDiv
+                    Return: AddSub
+                  Return: Comp
+                Return: LogAnd
+              Return: LogOr
+            Return: Expr
+            Consumed token: <";" at line 8 column 25>
+          Return: Stmt
+        Return: Stmt
+        Consumed token: <"}" at line 9 column 1>
+      Return: Block
+    Return: Fun
+    Call:   Type
+      Consumed token: <"int" at line 11 column 1>
+    Return: Type
+    Call:   Expr
+      Consumed token: <<IDENT>: "x" at line 11 column 5>
+      Consumed token: <"=" at line 11 column 7>
+      Call:   Expr
+        Call:   LogOr
+          Call:   LogAnd
+            Call:   Comp
+              Call:   AddSub
+                Call:   MulDiv
+                  Call:   Atom
+                    Consumed token: <<IDENT>: "y" at line 11 column 9>
+                  Return: Atom
+                Return: MulDiv
+              Return: AddSub
+            Return: Comp
+          Return: LogAnd
+        Return: LogOr
+      Return: Expr
+    Return: Expr
+    Consumed token: <";" at line 11 column 10>
+    Call:   Type
+      Consumed token: <"int" at line 12 column 1>
+    Return: Type
+    Call:   Expr
+      Consumed token: <<IDENT>: "y" at line 12 column 5>
+      Consumed token: <"=" at line 12 column 7>
+      Call:   Expr
+        Call:   LogOr
+          Call:   LogAnd
+            Call:   Comp
+              Call:   AddSub
+                Call:   MulDiv
+                  Call:   Atom
+                    Consumed token: <<INTLIT>: "1" at line 12 column 9>
+                  Return: Atom
+                Return: MulDiv
+              Return: AddSub
+            Return: Comp
+          Return: LogAnd
+        Return: LogOr
+      Return: Expr
+    Return: Expr
+    Consumed token: <";" at line 12 column 10>
+    Call:   Fun
+      Consumed token: <"void" at line 14 column 1>
+      Consumed token: <<IDENT>: "main" at line 14 column 6>
+      Consumed token: <"(" at line 14 column 10>
+      Call:   Formals
+      Return: Formals
+      Consumed token: <")" at line 14 column 11>
+      Call:   Block
+        Consumed token: <"{" at line 14 column 13>
+        Call:   Stmt
+          Consumed token: <"print" at line 15 column 3>
+          Call:   Expr
+            Call:   LogOr
+              Call:   LogAnd
+                Call:   Comp
+                  Call:   AddSub
+                    Call:   MulDiv
+                      Call:   Atom
+                        Call:   FunCall
+                          Consumed token: <<IDENT>: "fact" at line 15 column 9>
+                          Consumed token: <"(" at line 15 column 13>
+                          Call:   Expr
+                            Call:   LogOr
+                              Call:   LogAnd
+                                Call:   Comp
+                                  Call:   AddSub
+                                    Call:   MulDiv
+                                      Call:   Atom
+                                        Consumed token: <<INTLIT>: "7" at line 15 column 14>
+                                      Return: Atom
+                                    Return: MulDiv
+                                  Return: AddSub
+                                Return: Comp
+                              Return: LogAnd
+                            Return: LogOr
+                          Return: Expr
+                          Consumed token: <")" at line 15 column 15>
+                        Return: FunCall
+                      Return: Atom
+                    Return: MulDiv
+                  Return: AddSub
+                Return: Comp
+              Return: LogAnd
+            Return: LogOr
+          Return: Expr
+          Consumed token: <";" at line 15 column 16>
+        Return: Stmt
+        Call:   Stmt
+          Consumed token: <"print" at line 16 column 3>
+          Call:   Expr
+            Call:   LogOr
+              Call:   LogAnd
+                Call:   Comp
+                  Call:   AddSub
+                    Call:   MulDiv
+                      Call:   Atom
+                        Call:   FunCall
+                          Consumed token: <<IDENT>: "fact" at line 16 column 9>
+                          Consumed token: <"(" at line 16 column 13>
+                          Call:   Expr
+                            Call:   LogOr
+                              Call:   LogAnd
+                                Call:   Comp
+                                  Call:   AddSub
+                                    Call:   MulDiv
+                                      Call:   Atom
+                                        Consumed token: <<INTLIT>: "3" at line 16 column 14>
+                                      Return: Atom
+                                    Return: MulDiv
+                                  Return: AddSub
+                                Return: Comp
+                              Return: LogAnd
+                            Return: LogOr
+                          Return: Expr
+                          Consumed token: <")" at line 16 column 15>
+                        Return: FunCall
+                      Return: Atom
+                    Return: MulDiv
+                  Return: AddSub
+                Return: Comp
+              Return: LogAnd
+            Return: LogOr
+          Return: Expr
+          Consumed token: <";" at line 16 column 16>
+        Return: Stmt
+        Call:   Stmt
+          Consumed token: <"print" at line 17 column 3>
+          Call:   Expr
+            Call:   LogOr
+              Call:   LogAnd
+                Call:   Comp
+                  Call:   AddSub
+                    Call:   MulDiv
+                      Call:   Atom
+                        Call:   FunCall
+                          Consumed token: <<IDENT>: "fact" at line 17 column 9>
+                          Consumed token: <"(" at line 17 column 13>
+                          Call:   Expr
+                            Call:   LogOr
+                              Call:   LogAnd
+                                Call:   Comp
+                                  Call:   AddSub
+                                    Call:   MulDiv
+                                      Call:   Atom
+                                        Consumed token: <<IDENT>: "count" at line 17 column 14>
+                                      Return: Atom
+                                    Return: MulDiv
+                                  Return: AddSub
+                                Return: Comp
+                              Return: LogAnd
+                            Return: LogOr
+                          Return: Expr
+                          Consumed token: <")" at line 17 column 19>
+                        Return: FunCall
+                      Return: Atom
+                    Return: MulDiv
+                  Return: AddSub
+                Return: Comp
+              Return: LogAnd
+            Return: LogOr
+          Return: Expr
+          Consumed token: <";" at line 17 column 20>
+        Return: Stmt
+        Consumed token: <"}" at line 18 column 1>
+      Return: Block
+    Return: Fun
+  Return: TopDefs
+  Consumed token: <<EOF> at line 19 column 1>
+Return: Top
 Valid syntax
