@@ -1,0 +1,51 @@
+1c1,48
+< Valid syntax
+---
+> Call:   Top
+>   Call:   TopDefs
+>     Call:   Type
+>       Consumed token: <"int" at line 1 column 1>
+>     Return: Type
+>     Call:   Expr
+>       Consumed token: <<IDENT>: "count" at line 1 column 5>
+>       Consumed token: <"=" at line 1 column 11>
+>       Call:   Expr
+>         Call:   LogOr
+>           Call:   LogAnd
+>             Call:   Comp
+>               Call:   AddSub
+>                 Call:   MulDiv
+>                   Call:   Atom
+>                     Consumed token: <<INTLIT>: "0" at line 1 column 13>
+>                   Return: Atom
+>                 Return: MulDiv
+>               Return: AddSub
+>             Return: Comp
+>           Return: LogAnd
+>         Return: LogOr
+>       Return: Expr
+>     Return: Expr
+>     Consumed token: <";" at line 1 column 14>
+>   Return: TopDefs
+>   Call:   TopDefs
+>     Call:   Type
+>       Consumed token: <"int" at line 3 column 1>
+>     Return: Type
+>     Call:   Expr
+>       Call:   LogOr
+>         Call:   LogAnd
+>           Call:   Comp
+>             Call:   AddSub
+>               Call:   MulDiv
+>                 Call:   Atom
+>                   Consumed token: <<IDENT>: "fact" at line 3 column 5>
+>                 Return: Atom
+>               Return: MulDiv
+>             Return: AddSub
+>           Return: Comp
+>         Return: LogAnd
+>       Return: LogOr
+>     Return: Expr
+>   Return: TopDefs
+> Return: Top
+> Invalid syntax at (5,3), fact

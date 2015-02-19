@@ -1,4 +1,4 @@
-//options { DEBUG_PARSER = true; } 
+options { DEBUG_PARSER = true; } 
 
 PARSER_BEGIN(Parser)
 
@@ -35,6 +35,7 @@ void TopDefs(): { } {
 void Fun(): { } {
  ("void" | Type())  <IDENT> <OPEN> Formals() <CLOSE> Block()
 }
+
 
 void Formals(): { } {
   ((Type()<IDENT>)("," Type()<IDENT>)*)*
