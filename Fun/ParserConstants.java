@@ -53,9 +53,12 @@ public interface ParserConstants {
   /** Literal token values. */
   String[] tokenImage = {
     "<EOF>",
-    "\",\"",
+    "\"=\"",
     "\";\"",
     "\"void\"",
+    "\"int\"",
+    "\"boolean\"",
+    "\",\"",
     "\"print\"",
     "\"return\"",
     "\"while\"",
@@ -63,9 +66,6 @@ public interface ParserConstants {
     "\"else\"",
     "\"{\"",
     "\"}\"",
-    "\"int\"",
-    "\"boolean\"",
-    "\"=\"",
     "\" \"",
     "\"\\t\"",
     "\"\\n\"",

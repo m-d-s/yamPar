@@ -1,4 +1,4 @@
-options { DEBUG_PARSER = true; } 
+//options { DEBUG_PARSER = true; } 
 
 PARSER_BEGIN(Parser)
 
@@ -23,17 +23,23 @@ PARSER_END(Parser)
 //- Parser Functions --------------------------------------------------
 
 void Top(): { } {
-  LOOKAHEAD(2)
-  TopDefs()|Fun() <EOF>
+  (LOOKAHEAD(3) TopDefs()|Fun() )+ <EOF>
 }
 
 void TopDefs(): { } {
-  Type() Expr() ("," Expr())* ";"
+  Type() <IDENT> ("=" <INTLIT>)? ";"
 }
 
+void RetType(): { } {
+  "void" | "int" | "boolean"
+}
 
 void Fun(): { } {
- ("void" | Type())  <IDENT> <OPEN> Formals() <CLOSE> Block()
+ RetType()  <IDENT> <OPEN> Formals() <CLOSE> Block()
+}
+
+void FunCall(): { } {
+  <IDENT> <OPEN> Formals() <CLOSE> ";"
 }
 
 
@@ -48,7 +54,7 @@ void Stmt(): { } {
   |"while" <OPEN>Expr()<CLOSE> Stmt()
   |"if" <OPEN>Expr()<CLOSE> Stmt() (LOOKAHEAD(1) "else" Stmt())? 
   | Type() Expr() ("," Expr())* ";"
-  | StdAln()
+  | (LOOKAHEAD(2) FunCall() | StdAln())
   | ";"
 }
 
@@ -66,7 +72,8 @@ void StdAln(): { } {
 
 void Expr(): { } {
   LOOKAHEAD(2)
-   <IDENT> "="  Expr()
+  (LOOKAHEAD(2) <IDENT> "="  Expr()
+  |          FunCall())
   |            LogOr()
 }
 
