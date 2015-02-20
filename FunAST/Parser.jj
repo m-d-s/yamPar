@@ -1,12 +1,11 @@
-//options { DEBUG_PARSER = true; } 
 PARSER_BEGIN(Parser)
 import ast.*;
 public class Parser {
   public static void main(String[] args) {
      new Parser(System.in);
      try {
-       Stmt s = Top();
-       new IndentOutput(System.out).indent(s);
+       Defn[] program = Top();
+       new IndentOutput(System.out).indent(program);
      } catch (ParseException e) {
        System.out.println("Invalid syntax at ("
                           + token.beginColumn + ","
@@ -21,8 +20,44 @@ PARSER_END(Parser)
 
 //- Parser Functions --------------------------------------------------
 
-Stmt Top(): { Stmt s; } {
-  s=Stmt() <EOF> { return s; }
+Defn[] Top(): { Defn[] program; } {
+  program=Program(0) <EOF>
+  { return program; }
+}
+
+Defn[] Program(int soFar): { Defn d; Defn[] program; } {
+  ( d=Defn() program=Program(soFar+1)
+    { program[soFar] = d; return program; }
+  | { return new Defn[soFar]; })
+}
+
+Defn Defn(): { Defn d; } {
+  LOOKAHEAD(3)
+   d=Global()
+  |d=Fun()
+  { return d; }
+}
+
+Defn Global(): { Type t; VarIntro[] v; } {
+  t=Type() v=Intros(0) ";"
+  { return new Globals(t, v); }
+
+}
+
+Defn Fun(): { Type y = null; Token t; Formal[] f; Stmt s;} {
+  ( "void" | y=Type() ) t=<IDENT> <OPEN> f=Formals(0) <CLOSE> s=Block()
+  { return new Function(y, t.image ,f ,s); }
+}
+
+Formal[] Formals(int soFar): { Type y; Token t; Formal[] f; } {
+  y=Type() t=<IDENT> ("," f=Formals(soFar+1) 
+    { f[soFar] = new Formal(y, t.image); return f; })?
+  | {return new Formal[soFar]; } 
+}
+
+Stmt FunCall() { Token t; Expr[] e; } {
+  t=<IDENT> <OPEN> e=Exprs() <CLOSE> ";"
+  { return new ExprStmt(new Call(t.image,e)); }  
 }
 
 Stmt Stmt(): { Stmt s; } {
