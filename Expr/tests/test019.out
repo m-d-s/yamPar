@@ -1,1 +1,76 @@
+Call:   Top
+  Call:   Expr
+    Call:   LogOr
+      Call:   Comp
+        Call:   AddSub
+          Call:   MulDiv
+            Call:   Atom
+              Consumed token: <"(" at line 1 column 1>
+              Call:   Expr
+                Call:   LogOr
+                  Call:   Comp
+                    Call:   AddSub
+                      Call:   MulDiv
+                        Call:   Atom
+                          Consumed token: <"(" at line 1 column 2>
+                          Call:   Expr
+                            Call:   LogOr
+                              Call:   Comp
+                                Call:   AddSub
+                                  Call:   MulDiv
+                                    Call:   Atom
+                                      Consumed token: <<IDENT>: "a" at line 1 column 3>
+                                    Return: Atom
+                                    Call:   MulDivP
+                                    Return: MulDivP
+                                  Return: MulDiv
+                                  Call:   AddSubP
+                                    Consumed token: <"+" at line 1 column 4>
+                                    Call:   MulDiv
+                                      Call:   Atom
+                                        Consumed token: <<IDENT>: "b" at line 1 column 5>
+                                      Return: Atom
+                                      Call:   MulDivP
+                                      Return: MulDivP
+                                    Return: MulDiv
+                                    Call:   AddSubP
+                                    Return: AddSubP
+                                  Return: AddSubP
+                                Return: AddSub
+                              Return: Comp
+                            Return: LogOr
+                          Return: Expr
+                          Consumed token: <")" at line 1 column 6>
+                        Return: Atom
+                        Call:   MulDivP
+                        Return: MulDivP
+                      Return: MulDiv
+                      Call:   AddSubP
+                        Consumed token: <"+" at line 1 column 7>
+                        Call:   MulDiv
+                          Call:   Atom
+                            Consumed token: <<IDENT>: "c" at line 1 column 8>
+                          Return: Atom
+                          Call:   MulDivP
+                          Return: MulDivP
+                        Return: MulDiv
+                        Call:   AddSubP
+                        Return: AddSubP
+                      Return: AddSubP
+                    Return: AddSub
+                  Return: Comp
+                Return: LogOr
+              Return: Expr
+              Consumed token: <")" at line 1 column 9>
+            Return: Atom
+            Call:   MulDivP
+            Return: MulDivP
+          Return: MulDiv
+          Call:   AddSubP
+          Return: AddSubP
+        Return: AddSub
+      Return: Comp
+    Return: LogOr
+  Return: Expr
+Return: Top
 Invalid syntax at (9,1), )

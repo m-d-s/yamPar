@@ -1,3 +1,62 @@
+Call:   Top
+  Call:   Stmt
+    Call:   Block
+      Consumed token: <"{" at line 1 column 1>
+      Call:   Stmts
+        Call:   Stmt
+          Call:   StdAln
+            Consumed token: <<IDENT>: "x" at line 1 column 3>
+            Consumed token: <"=" at line 1 column 5>
+            Call:   Expr
+              Call:   LogOr
+                Call:   LogAnd
+                  Call:   Comp
+                    Call:   AddSub
+                      Call:   MulDiv
+                        Call:   Atom
+                          Consumed token: <<IDENT>: "y" at line 1 column 7>
+                        Return: Atom
+                      Return: MulDiv
+                    Return: AddSub
+                  Return: Comp
+                Return: LogAnd
+              Return: LogOr
+            Return: Expr
+            Consumed token: <";" at line 1 column 8>
+          Return: StdAln
+        Return: Stmt
+        Call:   Stmts
+          Call:   Stmt
+            Call:   StdAln
+              Consumed token: <<IDENT>: "a" at line 1 column 10>
+              Consumed token: <"=" at line 1 column 12>
+              Call:   Expr
+                Call:   LogOr
+                  Call:   LogAnd
+                    Call:   Comp
+                      Call:   AddSub
+                        Call:   MulDiv
+                          Call:   Atom
+                            Consumed token: <<IDENT>: "b" at line 1 column 14>
+                          Return: Atom
+                        Return: MulDiv
+                      Return: AddSub
+                    Return: Comp
+                  Return: LogAnd
+                Return: LogOr
+              Return: Expr
+              Consumed token: <";" at line 1 column 15>
+            Return: StdAln
+          Return: Stmt
+          Call:   Stmts
+          Return: Stmts
+        Return: Stmts
+      Return: Stmts
+      Consumed token: <"}" at line 1 column 17>
+    Return: Block
+  Return: Stmt
+  Consumed token: <<EOF> at line 1 column 18>
+Return: Top
 Block
   ExprStmt
     Assign

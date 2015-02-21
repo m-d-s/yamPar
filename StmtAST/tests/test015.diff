@@ -1,0 +1,159 @@
+0a1,158
+> Call:   Top
+>   Call:   Stmt
+>     Call:   If
+>       Consumed token: <"if" at line 1 column 1>
+>       Consumed token: <"(" at line 1 column 4>
+>       Call:   Expr
+>         Call:   LogOr
+>           Call:   LogAnd
+>             Call:   Comp
+>               Call:   AddSub
+>                 Call:   MulDiv
+>                   Call:   Atom
+>                     Consumed token: <<IDENT>: "x" at line 1 column 5>
+>                   Return: Atom
+>                 Return: MulDiv
+>               Return: AddSub
+>               Consumed token: <"<" at line 1 column 6>
+>               Call:   AddSub
+>                 Call:   MulDiv
+>                   Call:   Atom
+>                     Consumed token: <<IDENT>: "y" at line 1 column 7>
+>                   Return: Atom
+>                 Return: MulDiv
+>               Return: AddSub
+>             Return: Comp
+>           Return: LogAnd
+>         Return: LogOr
+>       Return: Expr
+>       Consumed token: <")" at line 1 column 8>
+>       Call:   Stmt
+>         Call:   Block
+>           Consumed token: <"{" at line 1 column 10>
+>           Call:   Stmts
+>             Call:   Stmt
+>               Call:   If
+>                 Consumed token: <"if" at line 2 column 4>
+>                 Consumed token: <"(" at line 2 column 7>
+>                 Call:   Expr
+>                   Call:   LogOr
+>                     Call:   LogAnd
+>                       Call:   Comp
+>                         Call:   AddSub
+>                           Call:   MulDiv
+>                             Call:   Atom
+>                               Consumed token: <<IDENT>: "u" at line 2 column 8>
+>                             Return: Atom
+>                           Return: MulDiv
+>                         Return: AddSub
+>                         Consumed token: <"<" at line 2 column 9>
+>                         Call:   AddSub
+>                           Call:   MulDiv
+>                             Call:   Atom
+>                               Consumed token: <<IDENT>: "v" at line 2 column 10>
+>                             Return: Atom
+>                           Return: MulDiv
+>                         Return: AddSub
+>                       Return: Comp
+>                     Return: LogAnd
+>                   Return: LogOr
+>                 Return: Expr
+>                 Consumed token: <")" at line 2 column 11>
+>                 Call:   Stmt
+>                   Call:   Print
+>                     Consumed token: <"print" at line 3 column 8>
+>                     Call:   Expr
+>                       Call:   LogOr
+>                         Call:   LogAnd
+>                           Call:   Comp
+>                             Call:   AddSub
+>                               Call:   MulDiv
+>                                 Call:   Atom
+>                                   Consumed token: <<INTLIT>: "1" at line 3 column 14>
+>                                 Return: Atom
+>                               Return: MulDiv
+>                             Return: AddSub
+>                           Return: Comp
+>                         Return: LogAnd
+>                       Return: LogOr
+>                     Return: Expr
+>                     Consumed token: <";" at line 3 column 15>
+>                   Return: Print
+>                 Return: Stmt
+>                 Consumed token: <"else" at line 4 column 4>
+>                 Call:   Stmt
+>                   Call:   Block
+>                     Consumed token: <"{" at line 4 column 9>
+>                     Call:   Stmts
+>                       Call:   Stmt
+>                         Call:   Print
+>                           Consumed token: <"print" at line 5 column 8>
+>                           Call:   Expr
+>                             Call:   LogOr
+>                               Call:   LogAnd
+>                                 Call:   Comp
+>                                   Call:   AddSub
+>                                     Call:   MulDiv
+>                                       Call:   Atom
+>                                         Consumed token: <<INTLIT>: "2" at line 5 column 14>
+>                                       Return: Atom
+>                                     Return: MulDiv
+>                                   Return: AddSub
+>                                 Return: Comp
+>                               Return: LogAnd
+>                             Return: LogOr
+>                           Return: Expr
+>                           Consumed token: <";" at line 5 column 15>
+>                         Return: Print
+>                       Return: Stmt
+>                       Call:   Stmts
+>                       Return: Stmts
+>                     Return: Stmts
+>                     Consumed token: <"}" at line 6 column 4>
+>                   Return: Block
+>                 Return: Stmt
+>               Return: If
+>             Return: Stmt
+>             Call:   Stmts
+>             Return: Stmts
+>           Return: Stmts
+>           Consumed token: <"}" at line 7 column 1>
+>         Return: Block
+>       Return: Stmt
+>       Consumed token: <"else" at line 7 column 3>
+>       Call:   Stmt
+>         Call:   Block
+>           Consumed token: <"{" at line 7 column 8>
+>           Call:   Stmts
+>             Call:   Stmt
+>               Call:   Print
+>                 Consumed token: <"print" at line 8 column 4>
+>                 Call:   Expr
+>                   Call:   LogOr
+>                     Call:   LogAnd
+>                       Call:   Comp
+>                         Call:   AddSub
+>                           Call:   MulDiv
+>                             Call:   Atom
+>                               Consumed token: <<INTLIT>: "3" at line 8 column 10>
+>                             Return: Atom
+>                           Return: MulDiv
+>                         Return: AddSub
+>                       Return: Comp
+>                     Return: LogAnd
+>                   Return: LogOr
+>                 Return: Expr
+>                 Consumed token: <";" at line 8 column 11>
+>               Return: Print
+>             Return: Stmt
+>             Call:   Stmts
+>             Return: Stmts
+>           Return: Stmts
+>           Consumed token: <"}" at line 9 column 1>
+>         Return: Block
+>       Return: Stmt
+>     Return: If
+>   Return: Stmt
+>   Consumed token: <<EOF> at line 9 column 2>
+> Return: Top

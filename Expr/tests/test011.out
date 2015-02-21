@@ -1,1 +1,55 @@
+Call:   Top
+  Call:   Expr
+    Call:   LogOr
+      Call:   Comp
+        Call:   AddSub
+          Call:   MulDiv
+            Call:   Atom
+              Consumed token: <<IDENT>: "a" at line 1 column 1>
+            Return: Atom
+            Call:   MulDivP
+            Return: MulDivP
+          Return: MulDiv
+          Call:   AddSubP
+          Return: AddSubP
+        Return: AddSub
+      Return: Comp
+    Return: LogOr
+    Consumed token: <"||" at line 1 column 3>
+    Call:   Expr
+      Call:   LogOr
+        Call:   Comp
+          Call:   AddSub
+            Call:   MulDiv
+              Call:   Atom
+                Consumed token: <<IDENT>: "b" at line 1 column 6>
+              Return: Atom
+              Call:   MulDivP
+              Return: MulDivP
+            Return: MulDiv
+            Call:   AddSubP
+            Return: AddSubP
+          Return: AddSub
+        Return: Comp
+        Consumed token: <"&&" at line 1 column 8>
+        Call:   LogOr
+          Call:   Comp
+            Call:   AddSub
+              Call:   MulDiv
+                Call:   Atom
+                  Consumed token: <<IDENT>: "c" at line 1 column 11>
+                Return: Atom
+                Call:   MulDivP
+                Return: MulDivP
+              Return: MulDiv
+              Call:   AddSubP
+              Return: AddSubP
+            Return: AddSub
+          Return: Comp
+        Return: LogOr
+      Return: LogOr
+    Return: Expr
+  Return: Expr
+  Consumed token: <<EOF> at line 1 column 12>
+Return: Top
 Valid syntax

@@ -1,0 +1,32 @@
+0a1,31
+> Call:   Top
+>   Call:   Expr
+>     Call:   LogOr
+>       Call:   Comp
+>         Call:   AddSub
+>           Call:   MulDiv
+>             Call:   Atom
+>               Consumed token: <<IDENT>: "a" at line 1 column 1>
+>             Return: Atom
+>             Call:   MulDivP
+>             Return: MulDivP
+>           Return: MulDiv
+>           Call:   AddSubP
+>           Return: AddSubP
+>         Return: AddSub
+>         Consumed token: <"==" at line 1 column 3>
+>         Call:   AddSub
+>           Call:   MulDiv
+>             Call:   Atom
+>               Consumed token: <<IDENT>: "b" at line 1 column 6>
+>             Return: Atom
+>             Call:   MulDivP
+>             Return: MulDivP
+>           Return: MulDiv
+>           Call:   AddSubP
+>           Return: AddSubP
+>         Return: AddSub
+>       Return: Comp
+>     Return: LogOr
+>   Return: Expr
+> Return: Top

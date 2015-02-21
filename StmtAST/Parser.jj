@@ -1,4 +1,4 @@
-//options { DEBUG_PARSER = true; } 
+options { DEBUG_PARSER = true; } 
 PARSER_BEGIN(Parser)
 import ast.*;
 public class Parser {
@@ -86,9 +86,9 @@ VarIntro Var(): { Token t; Expr e; } {
 }
 
 VarIntro[] Intros(int soFar): { VarIntro[] intros; VarIntro v; } {
-  v=Var() ("," intros = Intros(soFar+1) { intros[soFar] = v; return intros;})?
-  intros=Intros(soFar+1) { intros[soFar] = v; return intros;} 
-  |  { return new VarIntro[soFar]; }  
+  v=Var() ("," intros = Intros(soFar+1) { intros[soFar] = v; return intros; })?
+    { intros = new VarIntro[soFar+1]; intros[soFar] = v; return intros; } 
+  //| { return new VarIntro[soFar]; }  
 }
 
 Type Type(): { } {

@@ -1,3 +1,4 @@
+//options { DEBUG_PARSER = true; } 
 PARSER_BEGIN(Parser)
 import ast.*;
 public class Parser {
@@ -32,12 +33,13 @@ Defn[] Program(int soFar): { Defn d; Defn[] program; } {
 }
 
 Defn Defn(): { Defn d; } {
-  LOOKAHEAD(3)
-   d=Global()
-  |d=Fun()
+  ( LOOKAHEAD(3)
+    d=Global()
+   |d=Fun()
+  )
   { return d; }
 }
-
+ 
 Defn Global(): { Type t; VarIntro[] v; } {
   t=Type() v=Intros(0) ";"
   { return new Globals(t, v); }
@@ -52,21 +54,23 @@ Defn Fun(): { Type y = null; Token t; Formal[] f; Stmt s;} {
 Formal[] Formals(int soFar): { Type y; Token t; Formal[] f; } {
   y=Type() t=<IDENT> ("," f=Formals(soFar+1) 
     { f[soFar] = new Formal(y, t.image); return f; })?
-  | {return new Formal[soFar]; } 
+    {f = new Formal[soFar+1]; f[soFar] = new Formal(y, t.image); return f; }
+  | { return new Formal[0]; }
 }
 
-Stmt FunCall() { Token t; Expr[] e; } {
-  t=<IDENT> <OPEN> e=Exprs() <CLOSE> ";"
-  { return new ExprStmt(new Call(t.image,e)); }  
+StmtExpr FunCall(): { Token t; Expr[] e; } {
+  t=<IDENT> <OPEN> e=Exprs(0) <CLOSE>
+  { return new Call(t.image,e); }  
 }
 
-Stmt Stmt(): { Stmt s; } {
-  (  s= Print()      
+Stmt Stmt(): { Stmt s; StmtExpr m; } {
+   (  s= Print()      
    | s=Return()      
    | s=While()       
    | s=Block()       
    | s=If()          
-   | s=Decl()        
+   | s=Decl()
+   | LOOKAHEAD(2) m = FunCall() ";" { return new ExprStmt(m); }
    | s=StdAln()      
    | s=Empty()
   )
@@ -121,9 +125,8 @@ VarIntro Var(): { Token t; Expr e; } {
 }
 
 VarIntro[] Intros(int soFar): { VarIntro[] intros; VarIntro v; } {
-  v=Var() ("," intros = Intros(soFar+1) { intros[soFar] = v; return intros;})?
-  intros=Intros(soFar+1) { intros[soFar] = v; return intros;} 
-  |  { return new VarIntro[soFar]; }  
+  v=Var() ("," intros = Intros(soFar+1) { intros[soFar] = v; return intros; })?
+    { intros = new VarIntro[soFar+1]; intros[soFar] = v; return intros; } 
 }
 
 Type Type(): { } {
@@ -135,6 +138,12 @@ Stmt StdAln(): { Expr e; Token t; } {
   t=<IDENT> "=" e=Expr() ";"  
   { return new ExprStmt(new Assign(t.image, e)); }
 } 
+
+Expr[] Exprs(int soFar): { Expr e; Expr [] exprs; } {
+  e=Expr() ("," exprs = Exprs(soFar+1) { exprs[soFar] = e; return exprs; } )?
+    { exprs = new Expr[soFar+1]; exprs[soFar] = e; return exprs; }
+  | { return new Expr[0]; }
+}
 
 Expr Expr(): { Expr e; Token t; } {
   LOOKAHEAD(2)
@@ -179,7 +188,9 @@ Expr MulDiv(): { Expr e, p; } {
 }
 
 Expr Atom(): { Expr e; Token t; } {
-    t=<IDENT>               { return new Id(t.image);     }  
+  LOOKAHEAD(2) 
+    e=FunCall()             { return e; }
+  | t=<IDENT>               { return new Id(t.image);     }  
   | t=<INTLIT>              { return new IntLit(Integer.parseInt(t.image)); } 
   | <OPEN> e=Expr() <CLOSE> { return e;            } 
   

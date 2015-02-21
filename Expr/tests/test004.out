@@ -1,1 +1,39 @@
+Call:   Top
+  Call:   Expr
+    Call:   LogOr
+      Call:   Comp
+        Call:   AddSub
+          Call:   MulDiv
+            Call:   Atom
+              Consumed token: <"(" at line 1 column 1>
+              Call:   Expr
+                Call:   LogOr
+                  Call:   Comp
+                    Call:   AddSub
+                      Call:   MulDiv
+                        Call:   Atom
+                          Consumed token: <<INTLIT>: "1" at line 1 column 2>
+                        Return: Atom
+                        Call:   MulDivP
+                        Return: MulDivP
+                      Return: MulDiv
+                      Call:   AddSubP
+                      Return: AddSubP
+                    Return: AddSub
+                  Return: Comp
+                Return: LogOr
+              Return: Expr
+              Consumed token: <")" at line 1 column 3>
+            Return: Atom
+            Call:   MulDivP
+            Return: MulDivP
+          Return: MulDiv
+          Call:   AddSubP
+          Return: AddSubP
+        Return: AddSub
+      Return: Comp
+    Return: LogOr
+  Return: Expr
+  Consumed token: <<EOF> at line 1 column 4>
+Return: Top
 Valid syntax

@@ -1,1 +1,183 @@
+Call:   Top
+  Call:   Expr
+    Call:   LogOr
+      Call:   Comp
+        Call:   AddSub
+          Call:   MulDiv
+            Call:   Atom
+              Consumed token: <<IDENT>: "a" at line 1 column 1>
+            Return: Atom
+            Call:   MulDivP
+            Return: MulDivP
+          Return: MulDiv
+          Call:   AddSubP
+          Return: AddSubP
+        Return: AddSub
+        Consumed token: <"<" at line 1 column 3>
+        Call:   AddSub
+          Call:   MulDiv
+            Call:   Atom
+              Consumed token: <<IDENT>: "b" at line 1 column 5>
+            Return: Atom
+            Call:   MulDivP
+            Return: MulDivP
+          Return: MulDiv
+          Call:   AddSubP
+          Return: AddSubP
+        Return: AddSub
+      Return: Comp
+    Return: LogOr
+    Consumed token: <"||" at line 1 column 7>
+    Call:   Expr
+      Call:   LogOr
+        Call:   Comp
+          Call:   AddSub
+            Call:   MulDiv
+              Call:   Atom
+                Consumed token: <<IDENT>: "a" at line 1 column 10>
+              Return: Atom
+              Call:   MulDivP
+              Return: MulDivP
+            Return: MulDiv
+            Call:   AddSubP
+            Return: AddSubP
+          Return: AddSub
+          Consumed token: <">" at line 1 column 12>
+          Call:   AddSub
+            Call:   MulDiv
+              Call:   Atom
+                Consumed token: <<IDENT>: "b" at line 1 column 14>
+              Return: Atom
+              Call:   MulDivP
+              Return: MulDivP
+            Return: MulDiv
+            Call:   AddSubP
+            Return: AddSubP
+          Return: AddSub
+        Return: Comp
+      Return: LogOr
+      Consumed token: <"||" at line 1 column 16>
+      Call:   Expr
+        Call:   LogOr
+          Call:   Comp
+            Call:   AddSub
+              Call:   MulDiv
+                Call:   Atom
+                  Consumed token: <<IDENT>: "a" at line 1 column 19>
+                Return: Atom
+                Call:   MulDivP
+                Return: MulDivP
+              Return: MulDiv
+              Call:   AddSubP
+              Return: AddSubP
+            Return: AddSub
+            Consumed token: <"==" at line 1 column 21>
+            Call:   AddSub
+              Call:   MulDiv
+                Call:   Atom
+                  Consumed token: <<IDENT>: "b" at line 1 column 24>
+                Return: Atom
+                Call:   MulDivP
+                Return: MulDivP
+              Return: MulDiv
+              Call:   AddSubP
+              Return: AddSubP
+            Return: AddSub
+          Return: Comp
+        Return: LogOr
+        Consumed token: <"||" at line 1 column 26>
+        Call:   Expr
+          Call:   LogOr
+            Call:   Comp
+              Call:   AddSub
+                Call:   MulDiv
+                  Call:   Atom
+                    Consumed token: <<IDENT>: "a" at line 1 column 29>
+                  Return: Atom
+                  Call:   MulDivP
+                  Return: MulDivP
+                Return: MulDiv
+                Call:   AddSubP
+                Return: AddSubP
+              Return: AddSub
+              Consumed token: <"!=" at line 1 column 31>
+              Call:   AddSub
+                Call:   MulDiv
+                  Call:   Atom
+                    Consumed token: <<IDENT>: "b" at line 1 column 34>
+                  Return: Atom
+                  Call:   MulDivP
+                  Return: MulDivP
+                Return: MulDiv
+                Call:   AddSubP
+                Return: AddSubP
+              Return: AddSub
+            Return: Comp
+          Return: LogOr
+          Consumed token: <"||" at line 1 column 36>
+          Call:   Expr
+            Call:   LogOr
+              Call:   Comp
+                Call:   AddSub
+                  Call:   MulDiv
+                    Call:   Atom
+                      Consumed token: <<IDENT>: "a" at line 1 column 39>
+                    Return: Atom
+                    Call:   MulDivP
+                    Return: MulDivP
+                  Return: MulDiv
+                  Call:   AddSubP
+                  Return: AddSubP
+                Return: AddSub
+                Consumed token: <">=" at line 1 column 41>
+                Call:   AddSub
+                  Call:   MulDiv
+                    Call:   Atom
+                      Consumed token: <<IDENT>: "b" at line 1 column 44>
+                    Return: Atom
+                    Call:   MulDivP
+                    Return: MulDivP
+                  Return: MulDiv
+                  Call:   AddSubP
+                  Return: AddSubP
+                Return: AddSub
+              Return: Comp
+            Return: LogOr
+            Consumed token: <"||" at line 1 column 46>
+            Call:   Expr
+              Call:   LogOr
+                Call:   Comp
+                  Call:   AddSub
+                    Call:   MulDiv
+                      Call:   Atom
+                        Consumed token: <<IDENT>: "a" at line 1 column 49>
+                      Return: Atom
+                      Call:   MulDivP
+                      Return: MulDivP
+                    Return: MulDiv
+                    Call:   AddSubP
+                    Return: AddSubP
+                  Return: AddSub
+                  Consumed token: <"<=" at line 1 column 51>
+                  Call:   AddSub
+                    Call:   MulDiv
+                      Call:   Atom
+                        Consumed token: <<IDENT>: "b" at line 1 column 54>
+                      Return: Atom
+                      Call:   MulDivP
+                      Return: MulDivP
+                    Return: MulDiv
+                    Call:   AddSubP
+                    Return: AddSubP
+                  Return: AddSub
+                Return: Comp
+              Return: LogOr
+            Return: Expr
+          Return: Expr
+        Return: Expr
+      Return: Expr
+    Return: Expr
+  Return: Expr
+  Consumed token: <<EOF> at line 1 column 55>
+Return: Top
 Valid syntax

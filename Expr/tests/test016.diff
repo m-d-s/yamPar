@@ -1,0 +1,20 @@
+0a1,19
+> Call:   Top
+>   Call:   Expr
+>     Call:   LogOr
+>       Call:   Comp
+>         Call:   AddSub
+>           Call:   MulDiv
+>             Call:   Atom
+>               Consumed token: <<IDENT>: "a" at line 1 column 1>
+>             Return: Atom
+>             Call:   MulDivP
+>             Return: MulDivP
+>           Return: MulDiv
+>           Call:   AddSubP
+>           Return: AddSubP
+>         Return: AddSub
+>       Return: Comp
+>     Return: LogOr
+>   Return: Expr
+> Return: Top

@@ -1,3 +1,69 @@
+Call:   Top
+  Call:   Stmt
+    Call:   Decl
+      Call:   Type
+        Consumed token: <"int" at line 1 column 1>
+      Return: Type
+      Call:   Intros
+        Call:   Var
+          Consumed token: <<IDENT>: "x" at line 1 column 5>
+        Return: Var
+        Consumed token: <"," at line 1 column 6>
+        Call:   Intros
+          Call:   Var
+            Consumed token: <<IDENT>: "y" at line 1 column 8>
+            Consumed token: <"=" at line 1 column 9>
+            Call:   Expr
+              Call:   LogOr
+                Call:   LogAnd
+                  Call:   Comp
+                    Call:   AddSub
+                      Call:   MulDiv
+                        Call:   Atom
+                          Consumed token: <<IDENT>: "x" at line 1 column 10>
+                        Return: Atom
+                      Return: MulDiv
+                    Return: AddSub
+                  Return: Comp
+                Return: LogAnd
+              Return: LogOr
+            Return: Expr
+          Return: Var
+          Consumed token: <"," at line 1 column 11>
+          Call:   Intros
+            Call:   Var
+              Consumed token: <<IDENT>: "z" at line 1 column 13>
+            Return: Var
+            Consumed token: <"," at line 1 column 14>
+            Call:   Intros
+              Call:   Var
+                Consumed token: <<IDENT>: "t" at line 1 column 16>
+                Consumed token: <"=" at line 1 column 17>
+                Call:   Expr
+                  Call:   LogOr
+                    Call:   LogAnd
+                      Call:   Comp
+                        Call:   AddSub
+                          Call:   MulDiv
+                            Call:   Atom
+                              Consumed token: <<INTLIT>: "1" at line 1 column 18>
+                            Return: Atom
+                          Return: MulDiv
+                        Return: AddSub
+                      Return: Comp
+                    Return: LogAnd
+                  Return: LogOr
+                Return: Expr
+              Return: Var
+            Return: Intros
+          Return: Intros
+        Return: Intros
+      Return: Intros
+      Consumed token: <";" at line 1 column 19>
+    Return: Decl
+  Return: Stmt
+  Consumed token: <<EOF> at line 1 column 20>
+Return: Top
 Locals
   int
   VarIntro
