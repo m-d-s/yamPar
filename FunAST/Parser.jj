@@ -135,7 +135,7 @@ Stmt Stmt(): { Stmt s; StmtExpr m; } {
     | s=StdAln()      
     | s=Empty()
    )
-  { return s; }
+    { return s; }
 }
 
 /**
@@ -144,7 +144,7 @@ Stmt Stmt(): { Stmt s; StmtExpr m; } {
  */
 Stmt Print(): { Expr e; } {
   "print" e=Expr() ";"  
-  { return new   Print(e); }
+    { return new   Print(e); }
 }
 
 /**
@@ -153,7 +153,7 @@ Stmt Print(): { Expr e; } {
  */
 Stmt Return(): { Expr e = null; } {
   "return" ( e=Expr() )? ";"
-  { return new  Return(e);  }
+    { return new  Return(e);  }
 }
 
 
@@ -165,7 +165,7 @@ Stmt Return(): { Expr e = null; } {
  */
 Stmt While(): { Expr e; Stmt s;} {
   "while" <OPEN>e=Expr()<CLOSE>  s=Stmt() 
-  { return new While(e,s);  }
+    { return new While(e,s);  }
 }
 
 
@@ -175,7 +175,7 @@ Stmt While(): { Expr e; Stmt s;} {
  */
 Stmt Block(): { Stmt[] stmts; } {
   "{" stmts=Stmts(0) "}"
-  { return new Block(stmts); }
+    { return new Block(stmts); }
 }
 
 /**
@@ -186,7 +186,7 @@ Stmt Block(): { Stmt[] stmts; } {
  */
 Stmt If(): { Stmt s, l = null; Expr e; } {
   "if"    <OPEN>e=Expr()<CLOSE>  s=Stmt() (LOOKAHEAD(1) "else" l=Stmt())?
-  { return new  If(e,s,l);  } 
+    { return new  If(e,s,l);  } 
 
 }
 
@@ -195,7 +195,7 @@ Stmt If(): { Stmt s, l = null; Expr e; } {
  */
 Stmt Empty(): { } {
   ";"					   
-  { return new Empty(); }
+    { return new Empty(); }
 }
 
 /**
@@ -215,7 +215,7 @@ Stmt[] Stmts(int soFar): { Stmt s; Stmt[] stmts; } {
  */
 Stmt Decl(): { Type y; VarIntro[] intros; } {
   y=Type() intros = Intros(0) ";"
-  { return new Locals(y,intros); } 
+    { return new Locals(y,intros); } 
 }
 
 /**
@@ -251,7 +251,7 @@ Type Type(): { } {
  */
 Stmt StdAln(): { Expr e; Token t; } {
   t=<IDENT> "=" e=Expr() ";"  
-  { return new ExprStmt(new Assign(t.image, e)); }
+    { return new ExprStmt(new Assign(t.image, e)); }
 } 
 
 /**
