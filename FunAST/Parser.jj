@@ -1,4 +1,25 @@
+/**
+ * Author: Michael Simpson
+ * Date: 02/20/15
+ * Course: CS321
+ * Instructor: Mark Jones
+ * Assignment: #3
+ */
+
+/**
+ * This file contains Javacc code of a recursive decent parser for
+ * the YAM ( Yet Another Mini ) programming language. 
+ */
+
+/**
+ * uncommenting line 17 activates debug mode
+ */
 //options { DEBUG_PARSER = true; } 
+
+/**
+ * Main function that will obtain input, begin parsing, and catch any
+ * exceptions encountered during run time.
+ */
 PARSER_BEGIN(Parser)
 import ast.*;
 public class Parser {
@@ -21,36 +42,64 @@ PARSER_END(Parser)
 
 //- Parser Functions --------------------------------------------------
 
+/**
+ * Sentential non terminal: Defines the most high level pattern of 
+ * a valid YAM program. Returns: Defn array
+ */
 Defn[] Top(): { Defn[] program; } {
   program=Program(0) <EOF>
   { return program; }
 }
 
+/**
+ * This dynamically allocates a Defn array: valid  YAM programs are made
+ * up of zero or more definitions. Returns: Defn array
+ */
 Defn[] Program(int soFar): { Defn d; Defn[] program; } {
   ( d=Defn() program=Program(soFar+1)
     { program[soFar] = d; return program; }
   | { return new Defn[soFar]; })
 }
 
+/**
+ * This allows a Defn to be either a global variable declaration or
+ * a function declaration. LOOKAHEAD(3) reqired due to conflict
+ * involving a Type followed by an IDENT combination possibliity
+ * in Global and Fun.  Returns: Defn
+ */
 Defn Defn(): { Defn d; } {
   ( LOOKAHEAD(3)
     d=Global()
    |d=Fun()
   )
-  { return d; }
+    { return d; }
 }
- 
+
+/**
+ * Globals are made up from a type followed by one or more comma seperated
+ * expressions, terminating in a semicolon. Returns: Defn
+ */
 Defn Global(): { Type t; VarIntro[] v; } {
   t=Type() v=Intros(0) ";"
-  { return new Globals(t, v); }
+    { return new Globals(t, v); }
 
 }
 
+/**
+ * Function definitions are made up from a return type (null type value 
+ * denotes "void"), followed by an identifier, open paren, zero or more 
+ * formal parameters, closing paren, and a block. Return: Defn
+ */
 Defn Fun(): { Type y = null; Token t; Formal[] f; Stmt s;} {
   ( "void" | y=Type() ) t=<IDENT> <OPEN> f=Formals(0) <CLOSE> s=Block()
-  { return new Function(y, t.image ,f ,s); }
+    { return new Function(y, t.image ,f ,s); }
 }
 
+/**
+ * This dynamically allocates an array of zero or more comma seperated
+ * formal parameters that each are made up of a type and identifier pair.
+ * Returns: Formal array
+ */
 Formal[] Formals(int soFar): { Type y; Token t; Formal[] f; } {
   y=Type() t=<IDENT> ("," f=Formals(soFar+1) 
     { f[soFar] = new Formal(y, t.image); return f; })?
@@ -58,108 +107,195 @@ Formal[] Formals(int soFar): { Type y; Token t; Formal[] f; } {
   | { return new Formal[0]; }
 }
 
+/**
+ * Function calls are comprised of an identifier, open paren, zero or
+ * expressions, and a closing paren. Returns: StmtExpr
+ */
 StmtExpr FunCall(): { Token t; Expr[] e; } {
   t=<IDENT> <OPEN> e=Exprs(0) <CLOSE>
-  { return new Call(t.image,e); }  
+    { return new Call(t.image,e); }  
 }
 
+
+/**
+ * Statements direct control flow in YAM programs and as a result 
+ * are very diverse. Many statement elements are explained in
+ * their own seperate definitions. LOOKAHEAD(2) required due to 
+ * IDENT conflict between FunCall and StdAln. Returns: Stmt
+ */ 
 Stmt Stmt(): { Stmt s; StmtExpr m; } {
-   (  s= Print()      
-   | s=Return()      
-   | s=While()       
-   | s=Block()       
-   | s=If()          
-   | s=Decl()
-   | LOOKAHEAD(2) m = FunCall() ";" { return new ExprStmt(m); }
-   | s=StdAln()      
-   | s=Empty()
-  )
+  LOOKAHEAD(2) m = FunCall() ";" 
+    { return new ExprStmt(m); }
+  |(  s= Print()      
+    | s=Return()      
+    | s=While()       
+    | s=Block()       
+    | s=If()          
+    | s=Decl()
+    | s=StdAln()      
+    | s=Empty()
+   )
   { return s; }
 }
 
+/**
+ * Print statements begin with the string "print", followed by an
+ * expression, terminating with a semicolon. Returns: Stmt
+ */
 Stmt Print(): { Expr e; } {
   "print" e=Expr() ";"  
   { return new   Print(e); }
 }
 
+/**
+ * Return statements begin with the string "return", followed by an
+ * optional expression, terminating with a semicolon. Returns: Stmt
+ */
 Stmt Return(): { Expr e = null; } {
   "return" ( e=Expr() )? ";"
   { return new  Return(e);  }
 }
 
+
+/**
+ * While loops begin with the string "while", followed by an open paren,
+ * an expression, closed paren, and terminating with a statement. A block
+ * was not used in place of a statement to allow for in line while loops.
+ * Returns: Stmt
+ */
 Stmt While(): { Expr e; Stmt s;} {
   "while" <OPEN>e=Expr()<CLOSE>  s=Stmt() 
   { return new While(e,s);  }
 }
 
+
+/**
+ * Blocks begin with an open curly brace, followed by zero or more statements
+ * terminating in a closing curly brace. Returns: Stmt
+ */
 Stmt Block(): { Stmt[] stmts; } {
   "{" stmts=Stmts(0) "}"
   { return new Block(stmts); }
 }
 
+/**
+ * If statments begin with the string "if", followed by an expression nested
+ * beween open and closed parens, then a statement. The else clause is optional
+ * and LOOKAHEAD(1) is required to assert the dangling else is intentional.
+ * Returns: Stmt
+ */
 Stmt If(): { Stmt s, l = null; Expr e; } {
   "if"    <OPEN>e=Expr()<CLOSE>  s=Stmt() (LOOKAHEAD(1) "else" l=Stmt())?
   { return new  If(e,s,l);  } 
 
 }
 
+/**
+ * Empty statements are simply comprised of a single semicolon. Returns: Stmt
+ */
 Stmt Empty(): { } {
   ";"					   
   { return new Empty(); }
 }
 
+/**
+ * This dynamically allocates an array of zero or more statements recursively.
+ * Returns: Stmt array
+ */
 Stmt[] Stmts(int soFar): { Stmt s; Stmt[] stmts; } {
   s=Stmt() stmts=Stmts(soFar+1)
     { stmts[soFar]=s; return stmts; }
   | { return new Stmt[soFar]; }
 }
 
+/**
+ * Local variable declarations begin with a type, followed by one or more 
+ * variable intros, terminating with a semicolon. This pattern only differs from 
+ * global definitions in the constructor call. Returns: Stmt
+ */
 Stmt Decl(): { Type y; VarIntro[] intros; } {
   y=Type() intros = Intros(0) ";"
   { return new Locals(y,intros); } 
 }
 
+/**
+ * Variables within declarations can be either a single identifier, or an 
+ * identifier followed by an equals sign and an expression for assignment.
+ * Returns: VarIntro
+ */
 VarIntro Var(): { Token t; Expr e; } {
   t=<IDENT> ( "=" e=Expr() { return new InitVarIntro(t.image,e); })?
     { return new VarIntro(t.image); } 
 }
 
+/**
+ * This dynamically allocates an array of one or more comma sepererated variable 
+ * declarations. Returns: VarIntro array
+ */
 VarIntro[] Intros(int soFar): { VarIntro[] intros; VarIntro v; } {
   v=Var() ("," intros = Intros(soFar+1) { intros[soFar] = v; return intros; })?
     { intros = new VarIntro[soFar+1]; intros[soFar] = v; return intros; } 
 }
 
+/**
+ * Types can be recognized as either "int" or "boolean" strings. Returns: Type
+ */
 Type Type(): { } {
   ( "int"     { return Type.INT; }
   | "boolean" { return Type.BOOLEAN; })
 }
 
+/**
+ * Stand alone assignment statements begin with an identifier, followed by an 
+ * equals sign, an expression, and terminate with a semicolon. Returns: Stmt
+ */
 Stmt StdAln(): { Expr e; Token t; } {
   t=<IDENT> "=" e=Expr() ";"  
   { return new ExprStmt(new Assign(t.image, e)); }
 } 
 
+/**
+ * Dynamically allocates an array of zero or more comma seperated expressions.
+ * Returns: Expr array
+ */
 Expr[] Exprs(int soFar): { Expr e; Expr [] exprs; } {
   e=Expr() ("," exprs = Exprs(soFar+1) { exprs[soFar] = e; return exprs; } )?
     { exprs = new Expr[soFar+1]; exprs[soFar] = e; return exprs; }
   | { return new Expr[0]; }
 }
 
+/**
+ * Expressions are made up from assignment statements, or continue down the 
+ * grammar to search for other matching patterns. LOOKAHEAD(2) required due 
+ * to IDENT conflict between assignments and the identifier terminal. 
+ * Returns: Expr
+ */
 Expr Expr(): { Expr e; Token t; } {
   LOOKAHEAD(2)
   t =<IDENT> "=" e=Expr()   { return new Assign(t.image, e); }
   |e=LogOr()                { return e;        }
 }
 
+/**
+ * Logical "or" expression that is right associative. Returns: Expr
+ */
 Expr LogOr(): { Expr e, p; } {
   e=LogAnd() ( <LOR> p =LogOr() { e = new LOr(e,p); } )?
     { return e; }
 }
+
+/**
+ * Logical "and" expression that is right associative. Returns: Expr
+ */
 Expr LogAnd(): { Expr e, p; } {
   e=Comp() ( <LAND> p=LogAnd() { e = new LAnd(e,p); }   )?
     { return e; }
 }
 
+/**
+ * Binary comparative operators that are non associative.
+ * Returns: Expr
+ */
 Expr Comp(): { Expr e, p; } {
   e=AddSub() ( 
     ( <LT>   p=AddSub() { e = new Lt(e,p);  }      )
@@ -172,6 +308,10 @@ Expr Comp(): { Expr e, p; } {
     { return e; }
 }
 
+/**
+ * Arithmetic addition and subtraction operators that are left
+ * associative. Returns: Expr
+ */
 Expr AddSub(): { Expr e, p; } {
   e=MulDiv() ( 
 	       ( <ADD> p = MulDiv() { e = new Add(e,p); } ) 
@@ -180,6 +320,10 @@ Expr AddSub(): { Expr e, p; } {
     { return e; }
 }
 
+/**
+ * Arithmetic multiplication and division operators that are left
+ * associative. Returns: Expr
+ */
 Expr MulDiv(): { Expr e, p; } {
   e=Atom() ( ( <MUL> p = Atom() { e = new Mul(e,p); } )
             |( <DIV> p = Atom() { e = new Div(e,p); } )
@@ -187,6 +331,12 @@ Expr MulDiv(): { Expr e, p; } {
     { return e; }
 }
 
+/**
+ * Atoms are comprised of function calls, integer literal and identifier
+ * terminals, and paren enclosed expressions. Highest precidence in the 
+ * YAM grammar. LOOKAHEAD(2) required due to IDENT conflict between 
+ * function calls and identifier terminal. Returns: Expr
+ */
 Expr Atom(): { Expr e; Token t; } {
   LOOKAHEAD(2) 
     e=FunCall()             { return e; }
@@ -196,10 +346,14 @@ Expr Atom(): { Expr e; Token t; } {
   
 }
 
+/**
+ * The following rules are regular expression patterns to aid in token recognition
+ * during the parsing of a YAM program.
+ */
 
 //- Lexical Rules -----------------------------------------------------
 
-//Whitespace and comments
+//Whitespace and comments will be ignored
 SKIP : {
   " "
 | "\t"
@@ -218,8 +372,8 @@ TOKEN : {
 //Identifier
 TOKEN : {
   <IDENT:      <BEGIN> ( <LETTER> | <DIGIT> )*>
-| <#BEGIN:     ["A"-"Z","a"-"z"]            >
-| <#LETTER:    <BEGIN> | ["_"]              >
+| <#BEGIN:     ["A"-"Z","a"-"z"]              >
+| <#LETTER:    <BEGIN> | ["_"]                >
 }
 
 //Parentheses

@@ -1,4 +1,4 @@
-options { DEBUG_PARSER = true; } 
+//options { DEBUG_PARSER = true; } 
 PARSER_BEGIN(Parser)
 import ast.*;
 public class Parser {

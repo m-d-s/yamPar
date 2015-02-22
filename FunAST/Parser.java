@@ -17,6 +17,11 @@ public class Parser implements ParserConstants {
   }
 
 //- Parser Functions --------------------------------------------------
+
+/**
+ * Sentential non terminal: Defines the most high level pattern of 
+ * a valid YAM program. Returns: Defn array
+ */
   static final public Defn[] Top() throws ParseException {
                 Defn[] program;
     program = Program(0);
@@ -25,6 +30,10 @@ public class Parser implements ParserConstants {
     throw new Error("Missing return statement in function");
   }
 
+/**
+ * This dynamically allocates a Defn array: valid  YAM programs are made
+ * up of zero or more definitions. Returns: Defn array
+ */
   static final public Defn[] Program(int soFar) throws ParseException {
                              Defn d; Defn[] program;
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
@@ -42,6 +51,12 @@ public class Parser implements ParserConstants {
     throw new Error("Missing return statement in function");
   }
 
+/**
+ * This allows a Defn to be either a global variable declaration or
+ * a function declaration. LOOKAHEAD(3) reqired due to conflict
+ * involving a Type followed by an IDENT combination possibliity
+ * in Global and Fun.  Returns: Defn
+ */
   static final public Defn Defn() throws ParseException {
                Defn d;
     if (jj_2_1(3)) {
@@ -59,19 +74,28 @@ public class Parser implements ParserConstants {
         throw new ParseException();
       }
     }
-    {if (true) return d;}
+      {if (true) return d;}
     throw new Error("Missing return statement in function");
   }
 
+/**
+ * Globals are made up from a type followed by one or more comma seperated
+ * expressions, terminating in a semicolon. Returns: Defn
+ */
   static final public Defn Global() throws ParseException {
                  Type t; VarIntro[] v;
     t = Type();
     v = Intros(0);
     jj_consume_token(1);
-    {if (true) return new Globals(t, v);}
+      {if (true) return new Globals(t, v);}
     throw new Error("Missing return statement in function");
   }
 
+/**
+ * Function definitions are made up from a return type (null type value 
+ * denotes "void"), followed by an identifier, open paren, zero or more 
+ * formal parameters, closing paren, and a block. Return: Defn
+ */
   static final public Defn Fun() throws ParseException {
               Type y = null; Token t; Formal[] f; Stmt s;
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
@@ -92,10 +116,15 @@ public class Parser implements ParserConstants {
     f = Formals(0);
     jj_consume_token(CLOSE);
     s = Block();
-    {if (true) return new Function(y, t.image ,f ,s);}
+      {if (true) return new Function(y, t.image ,f ,s);}
     throw new Error("Missing return statement in function");
   }
 
+/**
+ * This dynamically allocates an array of zero or more comma seperated
+ * formal parameters that each are made up of a type and identifier pair.
+ * Returns: Formal array
+ */
   static final public Formal[] Formals(int soFar) throws ParseException {
                                Type y; Token t; Formal[] f;
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
@@ -122,46 +151,63 @@ public class Parser implements ParserConstants {
     throw new Error("Missing return statement in function");
   }
 
+/**
+ * Function calls are comprised of an identifier, open paren, zero or
+ * expressions, and a closing paren. Returns: StmtExpr
+ */
   static final public StmtExpr FunCall() throws ParseException {
                       Token t; Expr[] e;
     t = jj_consume_token(IDENT);
     jj_consume_token(OPEN);
     e = Exprs(0);
     jj_consume_token(CLOSE);
-    {if (true) return new Call(t.image,e);}
+      {if (true) return new Call(t.image,e);}
     throw new Error("Missing return statement in function");
   }
 
+/**
+ * Statements direct control flow in YAM programs and as a result 
+ * are very diverse. Many statement elements are explained in
+ * their own seperate definitions. LOOKAHEAD(2) required due to 
+ * IDENT conflict between FunCall and StdAln. Returns: Stmt
+ */
   static final public Stmt Stmt() throws ParseException {
                Stmt s; StmtExpr m;
-    switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-    case 4:
-      s = Print();
-      break;
-    case 5:
-      s = Return();
-      break;
-    case 6:
-      s = While();
-      break;
-    case 7:
-      s = Block();
-      break;
-    case 9:
-      s = If();
-      break;
-    case 12:
-    case 13:
-      s = Decl();
-      break;
-    default:
-      jj_la1[5] = jj_gen;
-      if (jj_2_2(2)) {
-        m = FunCall();
-        jj_consume_token(1);
-                                      {if (true) return new ExprStmt(m);}
-      } else {
+    if (jj_2_2(2)) {
+      m = FunCall();
+      jj_consume_token(1);
+      {if (true) return new ExprStmt(m);}
+    } else {
+      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+      case 1:
+      case 4:
+      case 5:
+      case 6:
+      case 7:
+      case 9:
+      case 12:
+      case 13:
+      case IDENT:
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+        case 4:
+          s = Print();
+          break;
+        case 5:
+          s = Return();
+          break;
+        case 6:
+          s = While();
+          break;
+        case 7:
+          s = Block();
+          break;
+        case 9:
+          s = If();
+          break;
+        case 12:
+        case 13:
+          s = Decl();
+          break;
         case IDENT:
           s = StdAln();
           break;
@@ -169,16 +215,25 @@ public class Parser implements ParserConstants {
           s = Empty();
           break;
         default:
-          jj_la1[6] = jj_gen;
+          jj_la1[5] = jj_gen;
           jj_consume_token(-1);
           throw new ParseException();
         }
+    {if (true) return s;}
+        break;
+      default:
+        jj_la1[6] = jj_gen;
+        jj_consume_token(-1);
+        throw new ParseException();
       }
     }
-    {if (true) return s;}
     throw new Error("Missing return statement in function");
   }
 
+/**
+ * Print statements begin with the string "print", followed by an
+ * expression, terminating with a semicolon. Returns: Stmt
+ */
   static final public Stmt Print() throws ParseException {
                 Expr e;
     jj_consume_token(4);
@@ -188,6 +243,10 @@ public class Parser implements ParserConstants {
     throw new Error("Missing return statement in function");
   }
 
+/**
+ * Return statements begin with the string "return", followed by an
+ * optional expression, terminating with a semicolon. Returns: Stmt
+ */
   static final public Stmt Return() throws ParseException {
                  Expr e = null;
     jj_consume_token(5);
@@ -206,6 +265,12 @@ public class Parser implements ParserConstants {
     throw new Error("Missing return statement in function");
   }
 
+/**
+ * While loops begin with the string "while", followed by an open paren,
+ * an expression, closed paren, and terminating with a statement. A block
+ * was not used in place of a statement to allow for in line while loops.
+ * Returns: Stmt
+ */
   static final public Stmt While() throws ParseException {
                 Expr e; Stmt s;
     jj_consume_token(6);
@@ -217,6 +282,10 @@ public class Parser implements ParserConstants {
     throw new Error("Missing return statement in function");
   }
 
+/**
+ * Blocks begin with an open curly brace, followed by zero or more statements
+ * terminating in a closing curly brace. Returns: Stmt
+ */
   static final public Stmt Block() throws ParseException {
                 Stmt[] stmts;
     jj_consume_token(7);
@@ -226,6 +295,12 @@ public class Parser implements ParserConstants {
     throw new Error("Missing return statement in function");
   }
 
+/**
+ * If statments begin with the string "if", followed by an expression nested
+ * beween open and closed parens, then a statement. The else clause is optional
+ * and LOOKAHEAD(1) is required to assert the dangling else is intentional.
+ * Returns: Stmt
+ */
   static final public Stmt If() throws ParseException {
              Stmt s, l = null; Expr e;
     jj_consume_token(9);
@@ -246,12 +321,19 @@ public class Parser implements ParserConstants {
     throw new Error("Missing return statement in function");
   }
 
+/**
+ * Empty statements are simply comprised of a single semicolon. Returns: Stmt
+ */
   static final public Stmt Empty() throws ParseException {
     jj_consume_token(1);
     {if (true) return new Empty();}
     throw new Error("Missing return statement in function");
   }
 
+/**
+ * This dynamically allocates an array of zero or more statements recursively.
+ * Returns: Stmt array
+ */
   static final public Stmt[] Stmts(int soFar) throws ParseException {
                            Stmt s; Stmt[] stmts;
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
@@ -275,6 +357,11 @@ public class Parser implements ParserConstants {
     throw new Error("Missing return statement in function");
   }
 
+/**
+ * Local variable declarations begin with a type, followed by one or more 
+ * variable intros, terminating with a semicolon. This pattern only differs from 
+ * global definitions in the constructor call. Returns: Stmt
+ */
   static final public Stmt Decl() throws ParseException {
                Type y; VarIntro[] intros;
     y = Type();
@@ -284,6 +371,11 @@ public class Parser implements ParserConstants {
     throw new Error("Missing return statement in function");
   }
 
+/**
+ * Variables within declarations can be either a single identifier, or an 
+ * identifier followed by an equals sign and an expression for assignment.
+ * Returns: VarIntro
+ */
   static final public VarIntro Var() throws ParseException {
                   Token t; Expr e;
     t = jj_consume_token(IDENT);
@@ -301,6 +393,10 @@ public class Parser implements ParserConstants {
     throw new Error("Missing return statement in function");
   }
 
+/**
+ * This dynamically allocates an array of one or more comma sepererated variable 
+ * declarations. Returns: VarIntro array
+ */
   static final public VarIntro[] Intros(int soFar) throws ParseException {
                                 VarIntro[] intros; VarIntro v;
     v = Var();
@@ -318,6 +414,9 @@ public class Parser implements ParserConstants {
     throw new Error("Missing return statement in function");
   }
 
+/**
+ * Types can be recognized as either "int" or "boolean" strings. Returns: Type
+ */
   static final public Type Type() throws ParseException {
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case 12:
@@ -336,6 +435,10 @@ public class Parser implements ParserConstants {
     throw new Error("Missing return statement in function");
   }
 
+/**
+ * Stand alone assignment statements begin with an identifier, followed by an 
+ * equals sign, an expression, and terminate with a semicolon. Returns: Stmt
+ */
   static final public Stmt StdAln() throws ParseException {
                  Expr e; Token t;
     t = jj_consume_token(IDENT);
@@ -346,6 +449,10 @@ public class Parser implements ParserConstants {
     throw new Error("Missing return statement in function");
   }
 
+/**
+ * Dynamically allocates an array of zero or more comma seperated expressions.
+ * Returns: Expr array
+ */
   static final public Expr[] Exprs(int soFar) throws ParseException {
                            Expr e; Expr [] exprs;
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
@@ -372,6 +479,12 @@ public class Parser implements ParserConstants {
     throw new Error("Missing return statement in function");
   }
 
+/**
+ * Expressions are made up from assignment statements, or continue down the 
+ * grammar to search for other matching patterns. LOOKAHEAD(2) required due 
+ * to IDENT conflict between assignments and the identifier terminal. 
+ * Returns: Expr
+ */
   static final public Expr Expr() throws ParseException {
                Expr e; Token t;
     if (jj_2_3(2)) {
@@ -396,6 +509,9 @@ public class Parser implements ParserConstants {
     throw new Error("Missing return statement in function");
   }
 
+/**
+ * Logical "or" expression that is right associative. Returns: Expr
+ */
   static final public Expr LogOr() throws ParseException {
                 Expr e, p;
     e = LogAnd();
@@ -413,6 +529,9 @@ public class Parser implements ParserConstants {
     throw new Error("Missing return statement in function");
   }
 
+/**
+ * Logical "and" expression that is right associative. Returns: Expr
+ */
   static final public Expr LogAnd() throws ParseException {
                  Expr e, p;
     e = Comp();
@@ -430,6 +549,10 @@ public class Parser implements ParserConstants {
     throw new Error("Missing return statement in function");
   }
 
+/**
+ * Binary comparative operators that are non associative.
+ * Returns: Expr
+ */
   static final public Expr Comp() throws ParseException {
                Expr e, p;
     e = AddSub();
@@ -485,6 +608,10 @@ public class Parser implements ParserConstants {
     throw new Error("Missing return statement in function");
   }
 
+/**
+ * Arithmetic addition and subtraction operators that are left
+ * associative. Returns: Expr
+ */
   static final public Expr AddSub() throws ParseException {
                  Expr e, p;
     e = MulDiv();
@@ -520,6 +647,10 @@ public class Parser implements ParserConstants {
     throw new Error("Missing return statement in function");
   }
 
+/**
+ * Arithmetic multiplication and division operators that are left
+ * associative. Returns: Expr
+ */
   static final public Expr MulDiv() throws ParseException {
                  Expr e, p;
     e = Atom();
@@ -555,6 +686,12 @@ public class Parser implements ParserConstants {
     throw new Error("Missing return statement in function");
   }
 
+/**
+ * Atoms are comprised of function calls, integer literal and identifier
+ * terminals, and paren enclosed expressions. Highest precidence in the 
+ * YAM grammar. LOOKAHEAD(2) required due to IDENT conflict between 
+ * function calls and identifier terminal. Returns: Expr
+ */
   static final public Expr Atom() throws ParseException {
                Expr e; Token t;
     if (jj_2_4(2)) {
@@ -613,6 +750,26 @@ public class Parser implements ParserConstants {
     finally { jj_save(3, xla); }
   }
 
+  static private boolean jj_3_4() {
+    if (jj_3R_4()) return true;
+    return false;
+  }
+
+  static private boolean jj_3R_8() {
+    if (jj_scan_token(13)) return true;
+    return false;
+  }
+
+  static private boolean jj_3R_7() {
+    if (jj_scan_token(12)) return true;
+    return false;
+  }
+
+  static private boolean jj_3R_10() {
+    if (jj_scan_token(3)) return true;
+    return false;
+  }
+
   static private boolean jj_3R_5() {
     Token xsp;
     xsp = jj_scanpos;
@@ -623,14 +780,20 @@ public class Parser implements ParserConstants {
     return false;
   }
 
-  static private boolean jj_3R_4() {
-    if (jj_scan_token(IDENT)) return true;
-    if (jj_scan_token(OPEN)) return true;
+  static private boolean jj_3R_3() {
+    if (jj_3R_5()) return true;
+    if (jj_3R_6()) return true;
+    if (jj_scan_token(1)) return true;
     return false;
   }
 
-  static private boolean jj_3_1() {
-    if (jj_3R_3()) return true;
+  static private boolean jj_3_2() {
+    if (jj_3R_4()) return true;
+    return false;
+  }
+
+  static private boolean jj_3R_11() {
+    if (jj_scan_token(11)) return true;
     return false;
   }
 
@@ -639,6 +802,17 @@ public class Parser implements ParserConstants {
     Token xsp;
     xsp = jj_scanpos;
     if (jj_3R_10()) jj_scanpos = xsp;
+    return false;
+  }
+
+  static private boolean jj_3_1() {
+    if (jj_3R_3()) return true;
+    return false;
+  }
+
+  static private boolean jj_3R_4() {
+    if (jj_scan_token(IDENT)) return true;
+    if (jj_scan_token(OPEN)) return true;
     return false;
   }
 
@@ -653,43 +827,6 @@ public class Parser implements ParserConstants {
     Token xsp;
     xsp = jj_scanpos;
     if (jj_3R_11()) jj_scanpos = xsp;
-    return false;
-  }
-
-  static private boolean jj_3_2() {
-    if (jj_3R_4()) return true;
-    return false;
-  }
-
-  static private boolean jj_3_4() {
-    if (jj_3R_4()) return true;
-    return false;
-  }
-
-  static private boolean jj_3R_10() {
-    if (jj_scan_token(3)) return true;
-    return false;
-  }
-
-  static private boolean jj_3R_8() {
-    if (jj_scan_token(13)) return true;
-    return false;
-  }
-
-  static private boolean jj_3R_3() {
-    if (jj_3R_5()) return true;
-    if (jj_3R_6()) return true;
-    if (jj_scan_token(1)) return true;
-    return false;
-  }
-
-  static private boolean jj_3R_11() {
-    if (jj_scan_token(11)) return true;
-    return false;
-  }
-
-  static private boolean jj_3R_7() {
-    if (jj_scan_token(12)) return true;
     return false;
   }
 
@@ -713,7 +850,7 @@ public class Parser implements ParserConstants {
       jj_la1_init_1();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0x3004,0x3004,0x3004,0x8,0x3000,0x32f0,0x400002,0x2500000,0x400,0x4032f2,0x800,0x8,0x3000,0x8,0x2500000,0x2500000,0x0,0x0,0xf8000000,0xf8000000,0x0,0x0,0x0,0x0,0x2500000,};
+      jj_la1_0 = new int[] {0x3004,0x3004,0x3004,0x8,0x3000,0x4032f2,0x4032f2,0x2500000,0x400,0x4032f2,0x800,0x8,0x3000,0x8,0x2500000,0x2500000,0x0,0x0,0xf8000000,0xf8000000,0x0,0x0,0x0,0x0,0x2500000,};
    }
    private static void jj_la1_init_1() {
       jj_la1_1 = new int[] {0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x4,0x2,0x1,0x1,0x18,0x18,0x60,0x60,0x0,};

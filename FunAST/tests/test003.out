@@ -1,0 +1,9 @@
+Function
+  int
+  "main"
+  Block
+    Return
+      Call
+        "foo"
+        Call
+          "bar"

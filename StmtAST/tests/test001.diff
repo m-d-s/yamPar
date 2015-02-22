@@ -1,9 +1,0 @@
-0a1,8
-> Call:   Top
->   Call:   Stmt
->     Call:   Empty
->       Consumed token: <";" at line 1 column 1>
->     Return: Empty
->   Return: Stmt
->   Consumed token: <<EOF> at line 1 column 26>
-> Return: Top

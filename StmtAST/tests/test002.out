@@ -1,26 +1,2 @@
-Call:   Top
-  Call:   Stmt
-    Call:   Print
-      Consumed token: <"print" at line 1 column 1>
-      Call:   Expr
-        Call:   LogOr
-          Call:   LogAnd
-            Call:   Comp
-              Call:   AddSub
-                Call:   MulDiv
-                  Call:   Atom
-                    Consumed token: <<INTLIT>: "42" at line 1 column 7>
-                  Return: Atom
-                Return: MulDiv
-              Return: AddSub
-            Return: Comp
-          Return: LogAnd
-        Return: LogOr
-      Return: Expr
-      Consumed token: <";" at line 1 column 9>
-    Return: Print
-  Return: Stmt
-  Consumed token: <<EOF> at line 1 column 52>
-Return: Top
 Print
   IntLit(42)
